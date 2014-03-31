@@ -1,13 +1,20 @@
 package core;
 
 public class Segment {
-	private TrafficLight signal;
+	private Signal light;
 
-	public TrafficLight getSignal() {
-		return signal;
+	/**
+	 * @return the light
+	 */
+	public Signal getLight() {
+		return light;
 	}
 
-	public void setSignal(TrafficLight signal) {
-		this.signal = signal;
+	/**
+	 * @param light the light to set
+	 */
+	public void setLight(Signal light) {
+		this.light = light;
 	}
+
 }

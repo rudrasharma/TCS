@@ -1,61 +1,84 @@
 package core;
-import java.util.ArrayList;
+
 import java.util.List;
 
-
 public class Journey {
-	private TimeUnit startTime;
-	private JourneyStation startStation;
-	private JourneyStation endStation;
-	private List<JourneyStation> stopStations;
-
-	public Journey(JourneyStation start, JourneyStation end,JourneyStation... stops){
-		this.startStation = start;
-		this.endStation = end;
-		stopStations = new ArrayList<>();
-		for(JourneyStation station: stops){
-			stopStations.add(station);
+	private Time startTime;
+	private Station start;
+	private Station end;
+	private List<Station> stops;
+	private List<Route> routes;
+	
+	public Journey(Time startTime, Station start, Station end, List<Station> stops, 
+			List<Route> routes) throws TCSException{
+		if(routes == null || routes.size()<=1) {
+			throw new TCSException("The number of routes should be greater than 1");
 		}
+		
+		this.startTime = startTime;
+		this.start = start;
+		this.end = end;
+		this.stops = stops;
+		this.routes = routes;
+	}
+	/**
+	 * @return the start
+	 */
+	public Station getStart() {
+		return start;
+	}
+	/**
+	 * @param start the start to set
+	 */
+	public void setStart(Station start) {
+		this.start = start;
+	}
+	/**
+	 * @return the end
+	 */
+	public Station getEnd() {
+		return end;
+	}
+	/**
+	 * @param end the end to set
+	 */
+	public void setEnd(Station end) {
+		this.end = end;
+	}
+	/**
+	 * @return the stop
+	 */
+	public List<Station> getStops() {
+		return stops;
+	}
+	/**
+	 * @param stop the stop to set
+	 */
+	public void setStop(List<Station> stops) {
+		this.stops = stops;
 	}
 	/**
 	 * @return the startTime
 	 */
-	public TimeUnit getStartTime() {
+	public Time getStartTime() {
 		return startTime;
 	}
-
 	/**
 	 * @param startTime the startTime to set
 	 */
-	public void setStartTime(TimeUnit startTime) {
+	public void setStartTime(Time startTime) {
 		this.startTime = startTime;
 	}
-
 	/**
-	 * @return the startStation
+	 * @return the routes
 	 */
-	public JourneyStation getStartStation() {
-		return startStation;
+	public List<Route> getRoutes() {
+		return routes;
 	}
-
 	/**
-	 * @param startStation the startStation to set
+	 * @param routes the routes to set
 	 */
-	public void setStartStation(JourneyStation startStation) {
-		this.startStation = startStation;
-	}
-
-	/**
-	 * @return the endStation
-	 */
-	public JourneyStation getEndStation() {
-		return endStation;
-	}
-
-	/**
-	 * @param endStation the endStation to set
-	 */
-	public void setEndStation(JourneyStation endStation) {
-		this.endStation = endStation;
+	public void setRoutes(List<Route> routes) {
+		this.routes = routes;
 	}
 }
