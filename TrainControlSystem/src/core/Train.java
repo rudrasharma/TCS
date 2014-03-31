@@ -4,6 +4,16 @@ public class Train {
 	private int trainId;
 	private Journey journey;
 	private Segment onSegment;
+	
+	/**
+	 * @param trainId
+	 * @param onSegment
+	 */
+	public Train(int trainId, Segment onSegment) {
+		this.trainId = trainId;
+		this.onSegment = onSegment;
+	}
+
 
 	/**
 	 * @return the trainId

@@ -2,6 +2,7 @@ package core;
 
 public class Segment {
 	private Signal light;
+	private boolean holdingTrain;
 
 	/**
 	 * @return the light
@@ -15,6 +16,20 @@ public class Segment {
 	 */
 	public void setLight(Signal light) {
 		this.light = light;
+	}
+
+	/**
+	 * @return the holdingTrain
+	 */
+	public boolean isHoldingTrain() {
+		return holdingTrain;
+	}
+
+	/**
+	 * @param holdingTrain the holdingTrain to set
+	 */
+	public void setHoldingTrain(boolean holdingTrain) {
+		this.holdingTrain = holdingTrain;
 	}
 
 }

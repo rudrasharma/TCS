@@ -2,6 +2,9 @@ package core;
 
 import java.util.List;
 
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
+
 public class Route {
 	
 	private int routeId;
@@ -9,20 +12,67 @@ public class Route {
 	private Time closeTime;
 	private Station start;
 	private Station end;
-	private List<Segment> segments;
+	private BiMap<Segment, Integer> segmentOrder;
 	
 	public Route(int routeId, Status status, Time closeTime, Station start, Station end, 
-			List<Segment> segments) throws TCSException {
-		if(segments == null || segments.size()<=1) {
-			throw new TCSException("The number of segments should be greater than 1");
+			List<Segment> orderedSegments) throws TCSException {
+		if(orderedSegments == null || orderedSegments.size()<=2) {
+			throw new TCSException("Number of segments should be greater than 2");
 		}
 		this.routeId = routeId;
 		this.status = status;
 		this.closeTime = closeTime;
 		this.start = start;
 		this.end = end;
-		this.setSegments(segments);
+		createSegmentOrder(orderedSegments);
 	}
+	/**
+	 * @param orderedSegments
+	 */
+	private void createSegmentOrder(List<Segment> orderedSegments) {
+		segmentOrder = HashBiMap.create();
+		int orderedSegSize = orderedSegments.size();
+		segmentOrder.put(orderedSegments.get(0),orderedSegSize);
+		segmentOrder.put(orderedSegments.get(orderedSegSize), 0);
+		for (int i = 1; i < orderedSegSize - 1; i++) {
+			segmentOrder.put(orderedSegments.get(i), i + 1);
+		}
+	}
+	public boolean enter(Segment segment) throws TCSException{
+		boolean allow = false;
+		if (canEnter(segment)) {
+			segment.setHoldingTrain(true);
+			Segment previousSeg = getPreviousSegment(segment);
+			previousSeg.setLight(Signal.RED);
+			allow = true;
+		}
+		return allow;
+	}
+	public boolean canEnter(Segment segment) throws TCSException{
+		boolean allow = false;
+		if (!segmentOrder.containsKey(segment)) {
+			throw new TCSException(
+					"Input segment does not belong to this Route");
+		}
+		Segment previousSegment = getPreviousSegment(segment);
+		if (!previousSegment.isHoldingTrain()) {
+			if (previousSegment.getLight() == Signal.GREEN) {
+				allow = true;
+			}
+		}
+		return allow;
+	}
+	/**
+	 * @param segment
+	 * @return
+	 */
+	private Segment getPreviousSegment(Segment segment) {
+		Integer segOrder = segmentOrder.get(segment);
+		Integer previousSeg = segOrder - 1;
+		Segment previousSegment = segmentOrder.inverse().get(previousSeg);
+		return previousSegment;
+	}
+	
 	/**
 	 * @return the routeId
 	 */
@@ -83,17 +133,6 @@ public class Route {
 	public void setEnd(Station end) {
 		this.end = end;
 	}
-	/**
-	 * @return the segments
-	 */
-	public List<Segment> getSegments() {
-		return segments;
-	}
-	/**
-	 * @param segments the segments to set
-	 */
-	public void setSegments(List<Segment> segments) {
-		this.segments = segments;
-	}
+
 
 }

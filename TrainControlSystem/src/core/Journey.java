@@ -10,16 +10,22 @@ public class Journey {
 	private List<Route> routes;
 	
 	public Journey(Time startTime, Station start, Station end, List<Station> stops, 
-			List<Route> routes) throws TCSException{
+			List<Route> routes) throws TCSException{		
 		if(routes == null || routes.size()<=1) {
 			throw new TCSException("The number of routes should be greater than 1");
 		}
-		
+		if(startTime.getUnit()<= 0){
+			throw new TCSException("Journey start time cannot be zero or negative");
+		}
 		this.startTime = startTime;
 		this.start = start;
 		this.end = end;
 		this.stops = stops;
 		this.routes = routes;
+	}
+	
+	public boolean isRoundTrip(){
+		return start.equals(end);
 	}
 	/**
 	 * @return the start
