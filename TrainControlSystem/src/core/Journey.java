@@ -2,6 +2,8 @@ package core;
 
 import java.util.List;
 
+import common.TCSException;
+
 public class Journey {
 	private Time startTime;
 	private Station start;

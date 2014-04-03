@@ -1,5 +1,7 @@
 package core;
 
+import segment.Segment;
+
 public class Train {
 	private int trainId;
 	private Journey journey;

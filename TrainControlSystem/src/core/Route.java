@@ -2,8 +2,11 @@ package core;
 
 import java.util.List;
 
+import segment.Segment;
+
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
+import common.TCSException;
 
 public class Route {
 	
