@@ -23,10 +23,13 @@ public class SegmentManager {
 
 	}
 	public List<Segment> getOutgoing(Segment segment) throws TCSException{
-		if (segmentControls.containsKey(segment)) {
+		return getController(segment).getOutGoing();		
+	}
+	public SegmentController getController(Segment segment) throws TCSException{
+		if (!segmentControls.containsKey(segment)) {
 			throw new TCSException(	"This segment not a part fo this system");
 		}
-		return segmentControls.get(segment).getOutGoing();
+		return segmentControls.get(segment);
 		
 	}
 
