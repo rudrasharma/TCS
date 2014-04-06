@@ -3,11 +3,20 @@ package route;
 import java.util.HashMap;
 import java.util.Map;
 
+import segment.SegmentManager;
 import common.TCSException;
 
 public class RouteManager {
-	Map<Integer, Route> routes;
+	private Map<Integer, Route> routes;
+	private SegmentManager segmentManager = SegmentManager.getInstance();
+	private static RouteManager instance;
 	
+	public static RouteManager getinstance(){
+		if(instance == null){
+			instance = new RouteManager();
+		}
+		return instance;
+	}
 	public RouteManager(){
 		routes = new HashMap<>();
 	}
@@ -18,7 +27,11 @@ public class RouteManager {
 		validateExisting(routeId);
 		return routes.get(routeId);
 	}
-	public Integer getNextSegmentId(Integer routeId, Integer currentSegment) throws TCSException{
+	public boolean traverse(Integer routeId, Integer currentSegmentId) throws TCSException{
+		Integer nextSegmentId = getNextSegmentId(routeId, currentSegmentId);
+		return segmentManager.traverse(currentSegmentId, nextSegmentId);
+	}
+	private Integer getNextSegmentId(Integer routeId, Integer currentSegment) throws TCSException{
 		validateExisting(routeId);
 		return routes.get(routeId).getNextSegementId(routeId, currentSegment);
 	
