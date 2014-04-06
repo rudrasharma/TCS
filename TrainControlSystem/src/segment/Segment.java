@@ -1,11 +1,11 @@
 package segment;
 
+import common.TCSException;
+
 import core.Signal;
 
 public class Segment {
 	private int segmentId;
-
-	private Signal light;
 	private boolean holdingTrain;
 	
 	protected boolean canEnter(){
@@ -15,29 +15,13 @@ public class Segment {
 		}
 		return allow;
 	}
-	
-	protected boolean canExit(){
-		boolean allow = false;
-		if(light == Signal.GREEN){
-			allow = true;
+	protected Signal getEntrySignal() throws TCSException{
+		if(!holdingTrain){
+			return Signal.GREEN;
 		}
-		return allow;
+		return Signal.RED;
 	}
-
-	/**
-	 * @return the light
-	 */
-	public Signal getLight() {
-		return light;
-	}
-
-	/**
-	 * @param light the light to set
-	 */
-	public void setLight(Signal light) {
-		this.light = light;
-	}
-
+	
 	/**
 	 * @return the holdingTrain
 	 */

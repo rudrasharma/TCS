@@ -36,8 +36,8 @@ public class SegmentManager {
 		if (!segmentControls.containsKey(current)) {
 			throw new TCSException(	"This segment not a part fo this system");
 		}
-		
-		return segmentControls.get(current).traverse(destination);
+		segmentControls.get(current).setNext(destination);
+		return segmentControls.get(current).traverse();
 	}
 	public boolean validate(){
 		//TODO Implement function

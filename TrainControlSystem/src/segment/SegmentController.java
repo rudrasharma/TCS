@@ -3,10 +3,13 @@ package segment;
 import java.util.List;
 
 import common.TCSException;
+import core.Signal;
 
 public class SegmentController {
 	private List<Segment> outGoing;
 	private Segment segment;
+	private Segment next;
+
 	/**
 	 * @param outGoing
 	 * @param segment
@@ -14,17 +17,16 @@ public class SegmentController {
 	protected SegmentController(Segment segment, List<Segment> outGoing) {
 		this.outGoing = outGoing;
 		this.segment = segment;
+		this.next = null;
 	}
-	
-	protected boolean traverse(Segment enteringSegment) throws TCSException{
-		if (!outGoing.contains(enteringSegment)) {
-			throw new TCSException(
-					"Error entering segment is not registered as an outgoing segment");
+	protected boolean traverse() throws TCSException{
+		if(next == null){
+			throw new TCSException("The next segment is undefined");
 		}
 		boolean success = false;
-		if(segment.canExit() && enteringSegment.canEnter()){
+		if(next.getEntrySignal() == Signal.GREEN){
 			segment.setHoldingTrain(false);
-			enteringSegment.setHoldingTrain(true);
+			next.setHoldingTrain(true);
 			success = true;
 		}
 		return success;
@@ -37,5 +39,23 @@ public class SegmentController {
 		return outGoing;
 	}
 
+	/**
+	 * @return the next
+	 */
+	public Segment getNext() {
+		return next;
+	}
 
+	/**
+	 * @param next the next to set
+	 * @throws TCSException 
+	 */
+	public void setNext(Segment next) throws TCSException {
+		if (!outGoing.contains(next)) {
+			throw new TCSException(
+					"Error entering segment is not registered as an outgoing segment");
+		}
+
+		this.next = next;
+	}
 }

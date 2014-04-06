@@ -35,46 +35,12 @@ public class Route {
 	private void createSegmentOrder(List<Segment> orderedSegments) {
 		segmentOrder = HashBiMap.create();
 		int orderedSegSize = orderedSegments.size();
-		segmentOrder.put(orderedSegments.get(0),orderedSegSize);
-		segmentOrder.put(orderedSegments.get(orderedSegSize), 0);
-		for (int i = 1; i < orderedSegSize - 1; i++) {
+		for (int i = 0; i < orderedSegSize - 1; i++) {
 			segmentOrder.put(orderedSegments.get(i), i + 1);
 		}
 	}
-	public boolean enter(Segment segment) throws TCSException{
-		boolean allow = false;
-		if (canEnter(segment)) {
-			segment.setHoldingTrain(true);
-			Segment previousSeg = getPreviousSegment(segment);
-			previousSeg.setLight(Signal.RED);
-			allow = true;
-		}
-		return allow;
-	}
-	public boolean canEnter(Segment segment) throws TCSException{
-		boolean allow = false;
-		if (!segmentOrder.containsKey(segment)) {
-			throw new TCSException(
-					"Input segment does not belong to this Route");
-		}
-		Segment previousSegment = getPreviousSegment(segment);
-		if (!previousSegment.isHoldingTrain()) {
-			if (previousSegment.getLight() == Signal.GREEN) {
-				allow = true;
-			}
-		}
-		return allow;
-	}
-	/**
-	 * @param segment
-	 * @return
-	 */
-	private Segment getPreviousSegment(Segment segment) {
-		Integer segOrder = segmentOrder.get(segment);
-		Integer previousSeg = segOrder - 1;
-		Segment previousSegment = segmentOrder.inverse().get(previousSeg);
-		return previousSegment;
-	}
+
+
 	
 	/**
 	 * @return the routeId
