@@ -19,6 +19,7 @@ public class Route {
 	private Time closeTime;
 	private Station start;
 	private Station end;
+	//segment id, and sequence Id
 	private BiMap<Integer, Integer> segmentOrder;
 	SegmentManager segmentManager;
 	public Route(int routeId, Status status, Time closeTime, Station start, Station end, 
@@ -58,11 +59,27 @@ public class Route {
 			putSegment(orderedSegmentIds.get(i), i);
 		}
 	}
+	
+	public Integer getNextSegementId(Integer routeId, Integer currentSequence) throws TCSException{
+		Integer next = null;
+		if(!segmentOrder.containsKey(routeId)){
+			throw new TCSException("Route id", routeId);
+		}
+		if(!segmentOrder.inverse().containsKey(currentSequence)){
+			throw new TCSException("Current sequence", currentSequence);
+		}
+		if(currentSequence < segmentOrder.size()){
+			next = segmentOrder.inverse().get(currentSequence+1);
+		}//return null if the current sequence is the last sequence
+		return next;
+		
+
+	}
 	private void putSegment(Integer segmentId, Integer sequence){
 		segmentOrder.put(segmentId, sequence);
 	}
 
-
+	
 	
 	/**
 	 * @return the routeId
@@ -70,22 +87,14 @@ public class Route {
 	public int getRouteId() {
 		return routeId;
 	}
-	/**
-	 * @param routeId the routeId to set
-	 */
-	public void setRouteId(int routeId) {
-		this.routeId = routeId;
-	}
+
 	/**
 	 * @return the status
 	 */
 	public Status getStatus() {
 		return status;
 	}
-	/**
-	 * @param status the status to set
-	 */
-	public void setStatus(Status status) {
+	protected void setStatus(Status status) {
 		this.status = status;
 	}
 	/**
@@ -94,36 +103,19 @@ public class Route {
 	public Time getCloseTime() {
 		return closeTime;
 	}
-	/**
-	 * @param closeTime the closeTime to set
-	 */
-	public void setCloseTime(Time closeTime) {
-		this.closeTime = closeTime;
-	}
+
 	/**
 	 * @return the start
 	 */
 	public Station getStart() {
 		return start;
 	}
-	/**
-	 * @param start the start to set
-	 */
-	public void setStart(Station start) {
-		this.start = start;
-	}
+
 	/**
 	 * @return the end
 	 */
 	public Station getEnd() {
 		return end;
 	}
-	/**
-	 * @param end the end to set
-	 */
-	public void setEnd(Station end) {
-		this.end = end;
-	}
-
 
 }
