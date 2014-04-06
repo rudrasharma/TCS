@@ -38,7 +38,7 @@ public class SegmentController {
 	/**
 	 * @param outGoing the outGoing to set
 	 */
-	public void setOutGoing(List<Segment> outGoing) {
+	protected void setOutGoing(List<Segment> outGoing) {
 		this.outGoing = outGoing;
 	}
 
