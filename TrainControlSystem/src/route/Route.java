@@ -2,6 +2,8 @@ package route;
 
 import java.util.List;
 
+import segment.SegmentManager;
+
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 
@@ -18,6 +20,7 @@ public class Route {
 	private Station start;
 	private Station end;
 	private BiMap<Integer, Integer> segmentOrder;
+	SegmentManager segmentManager;
 	public Route(int routeId, Status status, Time closeTime, Station start, Station end, 
 			List<Integer> orderedSegmentIds) throws TCSException {
 		if(orderedSegmentIds == null || orderedSegmentIds.size()<=2) {
@@ -28,17 +31,35 @@ public class Route {
 		this.closeTime = closeTime;
 		this.start = start;
 		this.end = end;
-		createSegmentOrder(orderedSegmentIds);
+		this.segmentManager = SegmentManager.getInstance();
+		createSegmentSequence(orderedSegmentIds);
 	}
 	/**
 	 * @param orderedSegments
+	 * @throws TCSException 
 	 */
-	private void createSegmentOrder(List<Integer> orderedSegmentIds) {
+	private void createSegmentSequence(List<Integer> orderedSegmentIds) throws TCSException  {
 		segmentOrder = HashBiMap.create();
+		
 		int orderedSegSize = orderedSegmentIds.size();
-		for (int i = 0; i < orderedSegSize; i++) {
-			segmentOrder.put(orderedSegmentIds.get(i), i + 1);
+		
+		//do the first segment without any incoming validation
+		Integer firstSegId = orderedSegmentIds.get(0);
+		segmentManager.validateExisting(firstSegId);//throws TCSException if invalid
+		putSegment(firstSegId, 0);
+		
+		for (int i = 1; i < orderedSegSize; i++) {
+			//before we can add it to the map we make sure that the previous segment has the next segment
+			//as part of its outgoing
+			Integer currentSegId = orderedSegmentIds.get(i);
+			Integer previousSegId = segmentOrder.inverse().get(i-1);
+			segmentManager.validateOutgoing(previousSegId, currentSegId);//throws TCSException if invalid
+			
+			putSegment(orderedSegmentIds.get(i), i);
 		}
+	}
+	private void putSegment(Integer segmentId, Integer sequence){
+		segmentOrder.put(segmentId, sequence);
 	}
 
 

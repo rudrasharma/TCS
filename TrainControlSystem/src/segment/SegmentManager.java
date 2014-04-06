@@ -43,11 +43,26 @@ public class SegmentManager {
 			validateExisting(segId);
 		}
 	}
-	private void validateExisting(Integer segId) throws TCSException{
-		if (!segmentControls.containsKey(segId)) {
+	public void validateExisting(Integer segId) throws TCSException{
+		if (!validateExists(segId)) {
 			throw new TCSException("segment id", segId);
 		}
 		
+	}
+	private boolean validateExists(Integer segmentId){
+		return segmentControls.containsKey(segmentId); 
+	}
+	
+	public boolean validateOutgoing(Integer segmentId, int nextSegmentId) throws TCSException{
+		validateExisting(segmentId);
+		boolean exists = false;
+		for(Segment segment: getOutgoing(segmentId)){
+			if(segment.getSegmentId() == nextSegmentId){
+				exists = true;
+				break;
+			}
+		}
+		return exists;
 	}
 	public List<Segment> getOutgoing(Integer segId) throws TCSException{
 		return getController(segId).getOutGoing();		
