@@ -1,12 +1,14 @@
-package core;
+package route;
 
 import java.util.List;
 
-import segment.Segment;
-
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
+
 import common.TCSException;
+import core.Station;
+import core.Status;
+import core.Time;
 
 public class Route {
 	
@@ -15,11 +17,10 @@ public class Route {
 	private Time closeTime;
 	private Station start;
 	private Station end;
-	private BiMap<Segment, Integer> segmentOrder;
-	
+	private BiMap<Integer, Integer> segmentOrder;
 	public Route(int routeId, Status status, Time closeTime, Station start, Station end, 
-			List<Segment> orderedSegments) throws TCSException {
-		if(orderedSegments == null || orderedSegments.size()<=2) {
+			List<Integer> orderedSegmentIds) throws TCSException {
+		if(orderedSegmentIds == null || orderedSegmentIds.size()<=2) {
 			throw new TCSException("Number of segments should be greater than 2");
 		}
 		this.routeId = routeId;
@@ -27,16 +28,16 @@ public class Route {
 		this.closeTime = closeTime;
 		this.start = start;
 		this.end = end;
-		createSegmentOrder(orderedSegments);
+		createSegmentOrder(orderedSegmentIds);
 	}
 	/**
 	 * @param orderedSegments
 	 */
-	private void createSegmentOrder(List<Segment> orderedSegments) {
+	private void createSegmentOrder(List<Integer> orderedSegmentIds) {
 		segmentOrder = HashBiMap.create();
-		int orderedSegSize = orderedSegments.size();
-		for (int i = 0; i < orderedSegSize - 1; i++) {
-			segmentOrder.put(orderedSegments.get(i), i + 1);
+		int orderedSegSize = orderedSegmentIds.size();
+		for (int i = 0; i < orderedSegSize; i++) {
+			segmentOrder.put(orderedSegmentIds.get(i), i + 1);
 		}
 	}
 

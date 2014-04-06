@@ -8,6 +8,11 @@ public class Segment {
 	private int segmentId;
 	private boolean holdingTrain;
 	
+	public Segment(int segmentId){
+		this.segmentId = segmentId;
+		holdingTrain = false;
+	}
+	
 	protected boolean canEnter(){
 		boolean allow = false;
 		if(!holdingTrain){

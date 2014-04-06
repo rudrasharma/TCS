@@ -7,15 +7,12 @@ import core.Signal;
 
 public class SegmentController {
 	private List<Segment> outGoing;
+
 	private Segment segment;
 	private Segment next;
 
-	/**
-	 * @param outGoing
-	 * @param segment
-	 */
-	protected SegmentController(Segment segment, List<Segment> outGoing) {
-		this.outGoing = outGoing;
+	protected SegmentController(Segment segment){
+		this.outGoing = null;
 		this.segment = segment;
 		this.next = null;
 	}
@@ -38,12 +35,21 @@ public class SegmentController {
 	public List<Segment> getOutGoing() {
 		return outGoing;
 	}
+	/**
+	 * @param outGoing the outGoing to set
+	 */
+	public void setOutGoing(List<Segment> outGoing) {
+		this.outGoing = outGoing;
+	}
 
 	/**
 	 * @return the next
 	 */
 	public Segment getNext() {
 		return next;
+	}
+	public Segment getSegment(){
+		return segment;
 	}
 
 	/**

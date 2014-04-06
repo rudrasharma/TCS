@@ -2,6 +2,7 @@ package core;
 
 import java.util.List;
 
+import route.Route;
 import common.TCSException;
 
 public class Journey {
