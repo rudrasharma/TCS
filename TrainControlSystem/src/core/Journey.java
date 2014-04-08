@@ -4,7 +4,6 @@ import java.util.List;
 
 import route.Route;
 import common.InvalidJourneyException;
-import common.TCSException;
 
 public class Journey {
 	private Time startTime;
@@ -53,7 +52,9 @@ public class Journey {
 			throw new InvalidJourneyException("End station", end.getStationId());
 		}
 		for(Station station: stops){
-			throw new InvalidJourneyException("Stop station", station.getStationId());
+			if(station.getStatus() == Status.CLOSED) {
+				throw new InvalidJourneyException("Stop station", station.getStationId());
+			}
 		}
 	}
 	
