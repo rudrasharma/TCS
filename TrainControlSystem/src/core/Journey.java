@@ -3,6 +3,7 @@ package core;
 import java.util.List;
 
 import route.Route;
+import common.InvalidJourneyException;
 import common.TCSException;
 
 public class Journey {
@@ -13,18 +14,47 @@ public class Journey {
 	private List<Route> routes;
 	
 	public Journey(Time startTime, Station start, Station end, List<Station> stops, 
-			List<Route> routes) throws TCSException{		
-		if(routes == null || routes.size()<=1) {
-			throw new TCSException("The number of routes should be greater than 1");
-		}
-		if(startTime.getUnit()<= 0){
-			throw new TCSException("Journey start time cannot be zero or negative");
-		}
+			List<Route> routes) throws InvalidJourneyException{		
+		
+		validateRoute(startTime, start, end, stops, routes);
 		this.startTime = startTime;
 		this.start = start;
 		this.end = end;
 		this.stops = stops;
 		this.routes = routes;
+	}
+
+	/**
+	 * @param startTime
+	 * @param start
+	 * @param end
+	 * @param stops
+	 * @param routes
+	 * @throws InvalidJourneyException
+	 */
+	private void validateRoute(Time startTime, Station start, Station end,
+			List<Station> stops, List<Route> routes)
+			throws InvalidJourneyException {
+		if(routes == null || routes.size()<=1) {
+			throw new InvalidJourneyException("The number of routes should be greater than or equal to 1");
+		}
+		if(startTime.getUnit()<= 0){
+			throw new InvalidJourneyException("Journey start time cannot be zero or negative");
+		}
+		for(Route route: routes){
+			if(route.getStatus() == Status.CLOSED){
+				throw new InvalidJourneyException("Route", route.getRouteId());
+			}
+		}
+		if(start.getStatus() == Status.CLOSED){
+			throw new InvalidJourneyException("Start station", start.getStationId());
+		}
+		if(end.getStatus() == Status.CLOSED){
+			throw new InvalidJourneyException("End station", end.getStationId());
+		}
+		for(Station station: stops){
+			throw new InvalidJourneyException("Stop station", station.getStationId());
+		}
 	}
 	
 	public boolean isRoundTrip(){

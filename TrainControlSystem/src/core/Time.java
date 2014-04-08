@@ -1,6 +1,8 @@
 package core;
 
 public class Time {
+	private int unit;
+
 	/**
 	 * @param unit
 	 */
@@ -8,7 +10,6 @@ public class Time {
 		this.unit = unit;
 	}
 
-	private int unit;
 
 	/**
 	 * @return the unit

@@ -13,13 +13,6 @@ public class Segment {
 		holdingTrain = false;
 	}
 	
-	protected boolean canEnter(){
-		boolean allow = false;
-		if(!holdingTrain){
-			allow = true;
-		}
-		return allow;
-	}
 	protected Signal getEntrySignal() throws TCSException{
 		if(!holdingTrain){
 			return Signal.GREEN;

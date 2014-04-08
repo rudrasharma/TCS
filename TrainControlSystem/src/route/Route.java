@@ -21,7 +21,8 @@ public class Route {
 	private Station end;
 	//segment id, and sequence Id
 	private BiMap<Integer, Integer> segmentOrder;
-	SegmentManager segmentManager;
+	private SegmentManager segmentManager;
+	
 	public Route(int routeId, Status status, Time closeTime, Station start, Station end, 
 			List<Integer> orderedSegmentIds) throws TCSException {
 		if(orderedSegmentIds == null || orderedSegmentIds.size()<=2) {
