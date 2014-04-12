@@ -5,6 +5,7 @@ import java.util.Map;
 
 import segment.SegmentManager;
 import common.TCSException;
+import core.Status;
 //commenting
 public class RouteManager {
 	private Map<Integer, Route> routes;
@@ -28,6 +29,10 @@ public class RouteManager {
 		return routes.get(routeId);
 	}
 	public boolean traverse(Integer routeId, Integer currentSegmentId) throws TCSException{
+		validateExisting(routeId);
+		if (getRoute(routeId).getStatus() != Status.OPEN){
+			return false;
+		}
 		Integer nextSegmentId = getNextSegmentId(routeId, currentSegmentId);
 		return segmentManager.traverse(currentSegmentId, nextSegmentId);
 	}
