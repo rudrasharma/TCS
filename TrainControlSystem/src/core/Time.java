@@ -25,4 +25,10 @@ public class Time {
 		this.unit = unit;
 	}
 
+
+	@Override
+	public String toString()
+	{
+		return "Time [unit=" + unit + "]";
+	}
 }

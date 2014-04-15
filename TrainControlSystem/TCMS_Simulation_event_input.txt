@@ -1,0 +1,15 @@
+CloseRoute(1001)
+SubmitJourney(465,1,(1000,1002,1005),(BOLD))
+SubmitJourney(300,1,(1002,1005),(BOLD))
+SubmitJourney(200,1,(1002,1005),())
+end
+OpenRoute(1001)
+CloseRoute(1000)
+SubmitJourney(211,1,(1005),())
+end
+end
+OpenRoute(1000)
+SubmitJourney(343,2,(1000,1002,1005),(LGMT,BOLD))
+Restart(465)
+Stop(300)
+end

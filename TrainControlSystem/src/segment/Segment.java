@@ -75,4 +75,11 @@ public class Segment {
 		return true;
 	}
 
+	@Override
+	public String toString()
+	{
+		return "Segment [segmentId=" + segmentId + ", holdingTrain="
+				+ holdingTrain + "]";
+	}
+
 }

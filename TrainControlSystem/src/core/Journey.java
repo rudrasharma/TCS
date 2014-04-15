@@ -1,8 +1,10 @@
 package core;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import route.Route;
+
 import common.InvalidJourneyException;
 
 public class Journey {
@@ -11,7 +13,9 @@ public class Journey {
 	private Station end;
 	private List<Station> stops;
 	private List<Route> routes;
-	
+	private Train train;
+
+
 	public Journey(Time startTime, Station start, Station end, List<Station> stops, 
 			List<Route> routes) throws InvalidJourneyException{		
 		
@@ -21,8 +25,40 @@ public class Journey {
 		this.end = end;
 		this.stops = stops;
 		this.routes = routes;
+	}	
+	
+	public Journey(String data) {
+		String[] tokens = data.split("[,()]");
+		
+		int trainId =new Integer(tokens[1]).intValue();
+		this.train = new Train(trainId, null);
+		
+		int startTime = new Integer(tokens[2]).intValue();
+		this.startTime = new Time(startTime);
+		
+		//Start index for routes from the split tokens
+		int i=4;
+		
+		this.routes = new ArrayList<Route>();
+		int routeid = 0;
+		for (;i<tokens.length && !tokens[i].trim().isEmpty() && i< tokens.length; i++)
+		{
+			routeid = new Integer(tokens[i]).intValue();
+			this.routes.add(new Route(routeid));
+		}
+		
+		//Go two indexes to get station id's
+		i = i+2;
+		
+		this.stops = new ArrayList<Station>();
+		int stationId = 0;
+		for (;i<tokens.length && !tokens[i].trim().isEmpty(); i++)
+		{
+			this.stops.add(new Station(tokens[i]));
+		}
+		
 	}
-
+	
 	/**
 	 * @param startTime
 	 * @param start
@@ -121,4 +157,23 @@ public class Journey {
 	public void setRoutes(List<Route> routes) {
 		this.routes = routes;
 	}
+	
+	public Train getTrainId()
+	{
+		return train;
+	}
+
+	public void setTrainId(Train train)
+	{
+		this.train = train;
+	}
+
+	@Override
+	public String toString()
+	{
+		return "Journey [startTime=" + startTime + ", start=" + start
+				+ ", end=" + end + ", stops=" + stops + ", routes=" + routes
+				+ ", train=" + train + "]";
+	}
+
 }

@@ -1,0 +1,15 @@
+#Stations
+S1
+S2
+S3
+#Routes
+RT1>S3,S1,5
+RT2>S1,S3,8
+RT3>S2,S3,3
+RT4>S3,S2,5
+RT5>S1,S2,7
+RT6>S2,S1,4
+#Trains
+TRN1>RT1,3
+TRN2>RT2,5
+TRN3>RT4,0

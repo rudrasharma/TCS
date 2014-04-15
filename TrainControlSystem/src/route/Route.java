@@ -36,6 +36,16 @@ public class Route {
 		this.segmentManager = SegmentManager.getInstance();
 		createSegmentSequence(orderedSegmentIds);
 	}
+	
+	public Route(int routeId){
+		this.routeId = routeId;
+	}
+	
+	public Route(String data){
+		String[] tokens = data.split("[()]");
+		this.routeId = new Integer(tokens[1]).intValue();
+	}
+	
 	/**
 	 * @param orderedSegments
 	 * @throws TCSException 
@@ -117,6 +127,14 @@ public class Route {
 	 */
 	public Station getEnd() {
 		return end;
+	}
+	
+	@Override
+	public String toString()
+	{
+		return "Route [routeId=" + routeId + ", status=" + status
+				+ ", closeTime=" + closeTime + ", start=" + start + ", end="
+				+ end + ", segmentManager=" + segmentManager + "]";
 	}
 
 }

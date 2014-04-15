@@ -15,6 +15,11 @@ public class Train {
 		this.trainId = trainId;
 		this.onSegment = onSegment;
 	}
+	
+	public Train(String data) {
+		String[] tokens = data.split("[()]");
+		this.trainId = new Integer(tokens[1]).intValue();
+	}
 
 
 	/**
@@ -58,4 +63,12 @@ public class Train {
 	public void setOnSegment(Segment onSegment) {
 		this.onSegment = onSegment;
 	}
+
+	@Override
+	public String toString()
+	{
+		return "Train [trainId=" + trainId + ", journey=" + journey
+				+ ", onSegment=" + onSegment + "]";
+	}
+	
 }

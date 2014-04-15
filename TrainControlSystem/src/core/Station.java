@@ -1,7 +1,7 @@
 package core;
 
 public class Station {
-	private int stationId;
+	private String stationId;
 	private Status status;
 	private Time closeTime;
 	/**
@@ -9,22 +9,26 @@ public class Station {
 	 * @param status
 	 * @param closeTime
 	 */
-	public Station(int stationId, Status status, Time closeTime) {
+	public Station(String stationId, Status status, Time closeTime) {
 		this.stationId = stationId;
 		this.status = status;
 		this.closeTime = closeTime;
+	}
+	
+	public Station(String stationId) {
+		this.stationId = stationId;
 	}
 
 	/**
 	 * @return the stationId
 	 */
-	public int getStationId() {
+	public String getStationId() {
 		return stationId;
 	}
 	/**
 	 * @param stationId the stationId to set
 	 */
-	public void setStationId(int stationId) {
+	public void setStationId(String stationId) {
 		this.stationId = stationId;
 	}
 	/**
@@ -54,19 +58,23 @@ public class Station {
 	/* (non-Javadoc)
 	 * @see java.lang.Object#hashCode()
 	 */
+
 	@Override
-	public int hashCode() {
+	public int hashCode()
+	{
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + stationId;
+		result = prime * result
+				+ ((closeTime == null) ? 0 : closeTime.hashCode());
+		result = prime * result
+				+ ((stationId == null) ? 0 : stationId.hashCode());
+		result = prime * result + ((status == null) ? 0 : status.hashCode());
 		return result;
 	}
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(Object obj)
+	{
 		if (this == obj)
 			return true;
 		if (obj == null)
@@ -74,9 +82,30 @@ public class Station {
 		if (getClass() != obj.getClass())
 			return false;
 		Station other = (Station) obj;
-		if (stationId != other.stationId)
+		if (closeTime == null)
+		{
+			if (other.closeTime != null)
+				return false;
+		}
+		else if (!closeTime.equals(other.closeTime))
+			return false;
+		if (stationId == null)
+		{
+			if (other.stationId != null)
+				return false;
+		}
+		else if (!stationId.equals(other.stationId))
+			return false;
+		if (status != other.status)
 			return false;
 		return true;
+	}
+
+	@Override
+	public String toString()
+	{
+		return "Station [stationId=" + stationId + ", status=" + status
+				+ ", closeTime=" + closeTime + "]";
 	}
 	
 }

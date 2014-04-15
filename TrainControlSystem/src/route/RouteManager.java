@@ -19,7 +19,7 @@ public class RouteManager {
 		return instance;
 	}
 	public RouteManager(){
-		routes = new HashMap<>();
+		routes = new HashMap<Integer, Route>();
 	}
 	public void addRoute(Route route){
 		routes.put(route.getRouteId(), route);

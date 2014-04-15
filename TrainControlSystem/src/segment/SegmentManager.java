@@ -18,7 +18,7 @@ public class SegmentManager {
 		return instance;
 	}
 	public SegmentManager(){
-		segmentControls = new HashMap<>();
+		segmentControls = new HashMap<Integer, SegmentController>();
 	}
 
 	public void addSegment(Segment segment) throws TCSException {
@@ -32,7 +32,7 @@ public class SegmentManager {
 	public void addOutgoing(Integer segId, List<Integer> outgoing) throws TCSException{
 		validateExisting(segId);
 		validateExisting(outgoing);
-		List<Segment> outGoing = new ArrayList<>();
+		List<Segment> outGoing = new ArrayList<Segment>();
 		for(Integer outgoingId: outgoing){
 			outGoing.add(segmentControls.get(outgoingId).getSegment());
 		}
