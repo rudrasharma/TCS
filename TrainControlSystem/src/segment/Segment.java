@@ -3,7 +3,9 @@ package segment;
 import common.TCSException;
 
 import core.Signal;
-
+/**
+ * 
+ */
 public class Segment {
 	private int segmentId;
 	private boolean holdingTrain;

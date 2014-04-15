@@ -6,7 +6,9 @@ import java.util.List;
 import java.util.Map;
 
 import common.TCSException;
-
+/**
+ * 
+ */
 public class SegmentManager {
 	private Map<Integer, SegmentController> segmentControls;
 	private static SegmentManager instance;
