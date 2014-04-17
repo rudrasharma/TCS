@@ -3,13 +3,10 @@
  */
 package route;
 
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
-import segment.SegmentManager;
-
-import com.google.common.collect.BiMap;
-import com.google.common.collect.HashBiMap;
-
+import segment.Segment;
 import common.TCSException;
 import core.Station;
 import core.Status;
@@ -22,13 +19,10 @@ public class Route {
 	private Time closeTime;
 	private Station start;
 	private Station end;
-	//segment id, and sequence Id
-	private BiMap<Integer, Integer> segmentOrder;
-	private SegmentManager segmentManager;
-	
+	private Map<Integer, Segment> segments;
 	public Route(int routeId, Status status, Time closeTime, Station start, Station end, 
-			List<Integer> orderedSegmentIds) throws TCSException {
-		if(orderedSegmentIds == null || orderedSegmentIds.size()<=2) {
+			int numberOfSegments) throws TCSException {
+		if(numberOfSegments<=2) {
 			throw new TCSException("Number of segments should be greater than 2");
 		}
 		this.routeId = routeId;
@@ -36,11 +30,15 @@ public class Route {
 		this.closeTime = closeTime;
 		this.start = start;
 		this.end = end;
-		this.segmentManager = SegmentManager.getInstance();
-		createSegmentSequence(orderedSegmentIds);
+		segments = new HashMap<>();
+		for(int i=1;i<=numberOfSegments;i++){
+			Segment segment = new Segment(i);
+			segments.put(i, segment);			
+		}
+		
 	}
 	
-	public Route(int routeId){
+	public Route(Integer routeId){
 		this.routeId = routeId;
 	}
 	
@@ -49,49 +47,7 @@ public class Route {
 		this.routeId = new Integer(tokens[1]).intValue();
 	}
 	
-	/**
-	 * @param orderedSegments
-	 * @throws TCSException 
-	 */
-	private void createSegmentSequence(List<Integer> orderedSegmentIds) throws TCSException  {
-		segmentOrder = HashBiMap.create();
-		
-		int orderedSegSize = orderedSegmentIds.size();
-		
-		//do the first segment without any incoming validation
-		Integer firstSegId = orderedSegmentIds.get(0);
-		segmentManager.validateExisting(firstSegId);//throws TCSException if invalid
-		putSegment(firstSegId, 0);
-		
-		for (int i = 1; i < orderedSegSize; i++) {
-			//before we can add it to the map we make sure that the previous segment has the next segment
-			//as part of its outgoing
-			Integer currentSegId = orderedSegmentIds.get(i);
-			Integer previousSegId = segmentOrder.inverse().get(i-1);
-			segmentManager.validateOutgoing(previousSegId, currentSegId);//throws TCSException if invalid
-			
-			putSegment(orderedSegmentIds.get(i), i);
-		}
-	}
 	
-	public Integer getNextSegementId(Integer routeId, Integer currentSequence) throws TCSException{
-		Integer next = null;
-		if(!segmentOrder.containsKey(routeId)){
-			throw new TCSException("Route id", routeId);
-		}
-		if(!segmentOrder.inverse().containsKey(currentSequence)){
-			throw new TCSException("Current sequence", currentSequence);
-		}
-		if(currentSequence < segmentOrder.size()){
-			next = segmentOrder.inverse().get(currentSequence+1);
-		}//return null if the current sequence is the last sequence
-		return next;
-		
-
-	}
-	private void putSegment(Integer segmentId, Integer sequence){
-		segmentOrder.put(segmentId, sequence);
-	}
 
 	
 	
@@ -131,13 +87,14 @@ public class Route {
 	public Station getEnd() {
 		return end;
 	}
-	
-	@Override
-	public String toString()
-	{
-		return "Route [routeId=" + routeId + ", status=" + status
-				+ ", closeTime=" + closeTime + ", start=" + start + ", end="
-				+ end + ", segmentManager=" + segmentManager + "]";
+
+	public Integer getNextSegementId(Integer currentSegment) {
+		Integer nextSegId = null;
+		if(!(currentSegment>segments.size())){
+			nextSegId = currentSegment+1;
+		}
+		return nextSegId;
 	}
+
 
 }
