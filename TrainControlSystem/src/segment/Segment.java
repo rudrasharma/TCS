@@ -1,18 +1,31 @@
 package segment;
 
 import common.TCSException;
-
 import core.Signal;
 /**
  * 
  */
 public class Segment {
 	private int segmentId;
+	private Segment next;
 	private boolean holdingTrain;
 	
 	public Segment(int segmentId){
 		this.segmentId = segmentId;
 		holdingTrain = false;
+	}
+	protected boolean traverse() throws TCSException{
+		if(next == null){
+			throw new TCSException("The next segment is undefined");
+		}
+		boolean success = false;
+		if(next.getEntrySignal() == Signal.GREEN){
+			this.holdingTrain = false;
+			next.setHoldingTrain(true);
+			success = true;
+		}
+		return success;
+		
 	}
 	
 	protected Signal getEntrySignal() throws TCSException{
@@ -82,6 +95,20 @@ public class Segment {
 	{
 		return "Segment [segmentId=" + segmentId + ", holdingTrain="
 				+ holdingTrain + "]";
+	}
+
+	/**
+	 * @return the next
+	 */
+	public Segment getNext() {
+		return next;
+	}
+
+	/**
+	 * @param next the next to set
+	 */
+	public void setNext(Segment next) {
+		this.next = next;
 	}
 
 }

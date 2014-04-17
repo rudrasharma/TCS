@@ -13,7 +13,6 @@ import core.Status;
 //commenting
 public class RouteManager {
 	private Map<Integer, Route> routes;
-	private SegmentManager segmentManager = SegmentManager.getInstance();
 	private static RouteManager instance;
 	
 	public static RouteManager getinstance(){

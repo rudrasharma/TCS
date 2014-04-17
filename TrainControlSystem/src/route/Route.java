@@ -131,13 +131,6 @@ public class Route {
 	public Station getEnd() {
 		return end;
 	}
-	
-	@Override
-	public String toString()
-	{
-		return "Route [routeId=" + routeId + ", status=" + status
-				+ ", closeTime=" + closeTime + ", start=" + start + ", end="
-				+ end + ", segmentManager=" + segmentManager + "]";
-	}
+
 
 }

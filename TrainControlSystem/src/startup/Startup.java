@@ -7,6 +7,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
+import route.Route;
 import common.TCSException;
 
 
@@ -43,6 +44,25 @@ public class Startup {
 				}
 
 				}else if(line.startsWith(Suffix.TRAIN.getValue())){
+					System.out.println(line);
+					String[] tokens = line.split(NAME_DELIMITOR);
+					try {
+						Integer trainId = extractId(Suffix.TRAIN, tokens[0]);
+						String trainParam = tokens[1];
+						String[] paramTokens = trainParam.split(PARAM_DELIMITOR);
+						Integer routeId = extractId(Suffix.ROUTE, paramTokens[0]);
+						if(!routes.contains(routeId)){
+							throw new TCSException("Invalid route id :"+routeId+" for train: "+trainId);							
+						}
+						Integer segmentId = Integer.parseInt(paramTokens[1]);
+						System.out.println("Train id: "+trainId+" route id: "+routeId+" segment id: "+segmentId);
+
+						
+
+					} catch (TCSException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 					
 				}else{
 					System.out.println("Unrecognized input:"+line);
@@ -80,16 +100,17 @@ public class Startup {
 		Integer routeNum = extractId(Suffix.ROUTE, routeName);
 		routes.add(routeNum);
 		String routeParam = tokens[1];
-		String[] routeParamToken = routeParam.split(PARAM_DELIMITOR);
-		Integer startStationId = extractId(Suffix.STATION, routeParamToken[0]);
+		String[] paramTokens = routeParam.split(PARAM_DELIMITOR);
+		Integer startStationId = extractId(Suffix.STATION, paramTokens[0]);
 		if(!stations.contains(startStationId)){
-			throw new TCSException("Invalid start station id:"+startStationId+" for route:"+routeNum);
+			throw new TCSException("Invalid start station id :"+startStationId+" for route: "+routeNum);
 		}
-		Integer stopStationId = extractId(Suffix.STATION, routeParamToken[1]);
+		Integer stopStationId = extractId(Suffix.STATION, paramTokens[1]);
 		if(!stations.contains(stopStationId)){
-			throw new TCSException("Invalid stop station id:"+stopStationId+" for route:"+routeNum);
+			throw new TCSException("Invalid stop station id: "+stopStationId+" for route: "+routeNum);
 		}
-		Integer numSegments = Integer.parseInt(routeParamToken[2]);
-		System.out.println("route number:"+routeNum+"Start station id:"+startStationId+" stopStationId: "+stopStationId+" number of segments:"+numSegments);
+		Integer numSegments = Integer.parseInt(paramTokens[2]);
+		System.out.println("route number:"+routeNum+"Start station id:"+startStationId+" stopStationId: "+stopStationId+" number of segments: "+numSegments);
+		Route route = new Route
 	}
 }
