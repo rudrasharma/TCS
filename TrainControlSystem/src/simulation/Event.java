@@ -17,5 +17,8 @@ public enum Event
 	public String getName() {
 		return this.name;
 	}
+	public Event get(){
+		return this;
+	}
 	
 }

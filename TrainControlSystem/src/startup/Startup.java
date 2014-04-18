@@ -12,6 +12,7 @@ import common.TCSException;
 import core.Station;
 import core.StationManager;
 import core.Status;
+import core.TrainManager;
 
 
 public class Startup {
@@ -19,7 +20,8 @@ public class Startup {
 	private static final String NAME_DELIMITOR = ">";
 	private static final String PARAM_DELIMITOR = ",";
 	private static StationManager sm = StationManager.getInstance();
-	private static RouteManager rm = RouteManager.getinstance(); 
+	private static RouteManager rm = RouteManager.getInstance(); 
+	private static TrainManager tm = TrainManager.getInstance();
 	public static void main(String[] args) throws IOException {
 		String location = DEFAULT_STARTUP_FILE;
 		if(args != null && args.length > 0){

@@ -13,7 +13,7 @@ public class StationManager {
 		}
 		return instance;
 	}
-	public StationManager(){
+	private StationManager(){
 		stations = new HashMap<>();
 	}
 	public void add(Station station){

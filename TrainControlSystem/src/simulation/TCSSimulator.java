@@ -14,19 +14,17 @@ public class TCSSimulator {
 	private static List<Entry<Event, String>> generateList(String location)
 			throws IOException {
 		List<Entry<Event, String>> eventList = new ArrayList<>();
-		//Map<Event, Object> eventMap = new HashMap<Event, Object>();
 		List<String> fileLines = Files.readAllLines(Paths.get(location), Charset.defaultCharset());
 		for(String line: fileLines){
-				Event event = getEvent(line);
-				Entry<Event, String> eventEntry = new SimpleEntry<Event, String>(event, line);
-				eventList.add(eventEntry);
+				eventList.add(getEvent(line));
 
 		}
 
 		return eventList;
 	}
-	private static Event getEvent(String line){
+	private static Entry<Event, String> getEvent(String line){
 		Event event = null;
+		String eventData = null;
 		if (line != null && !line.isEmpty()) {
 			if (line.startsWith(Event.SUBMIT_JOURNEY.getName())) {
 				event = Event.SUBMIT_JOURNEY;
@@ -42,7 +40,11 @@ public class TCSSimulator {
 				event = Event.CLOCK_TICK;
 			}
 		}
-		return event;
+		if(event != null){
+			eventData = line.substring(event.getName().length());
+		}
+		Entry<Event, String> eventEntry = new SimpleEntry<Event, String>(event, eventData);
+		return eventEntry;
 		
 	}
 	/*private Event getEvent(String line){
@@ -82,16 +84,30 @@ public class TCSSimulator {
 			System.exit(1);
 		}
 
-		List<Entry<Event, String>> eventMap = null;
+		List<Entry<Event, String>> eventList = null;
 
 		try {
-			eventMap = generateList(fileLocation);
+			eventList = generateList(fileLocation);
+			processEvents(eventList);
+			System.out.println(eventList.toString());
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
+	}
+	private static void processEvents(List<Entry<Event, String>> eventList) {
+		for(Entry<Event,String> entry: eventList){
+			Event event = entry.getKey();
+			String eventData = entry.getValue();
+			/*Event.CLOCK_TICK
+			switch(event.getName()){
+			case Event.
+			
+			}*/
+		}
+		
 	}
 
 }

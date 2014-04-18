@@ -12,13 +12,13 @@ public class RouteManager {
 	private Map<Integer, Route> routes;
 	private static RouteManager instance;
 	
-	public static RouteManager getinstance(){
+	public static RouteManager getInstance(){
 		if(instance == null){
 			instance = new RouteManager();
 		}
 		return instance;
 	}
-	public RouteManager(){
+	private RouteManager(){
 		routes = new HashMap<Integer, Route>();
 	}
 	public void add(Route route){
