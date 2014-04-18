@@ -33,7 +33,7 @@ public class Startup {
 					try{
 						Integer stationId = extractId(Suffix.STATION, line);
 						Station station = new Station(stationId.toString(), Status.CLOSED, null);
-						sm.addStation(station);
+						sm.add(station);
 						System.out.println(stationId);
 					}catch(TCSException e){
 						System.out.println(e.getMessage());
@@ -101,19 +101,19 @@ public class Startup {
 		String routeParam = tokens[1];
 		String[] paramTokens = routeParam.split(PARAM_DELIMITOR);
 		Integer startStationId = extractId(Suffix.STATION, paramTokens[0]);
-		if(!sm.stationExists(startStationId.toString())){
+		if(!sm.contains(startStationId.toString())){
 			throw new TCSException("Invalid start station id :"+startStationId+" for route: "+routeNum);
 		}
 		Integer stopStationId = extractId(Suffix.STATION, paramTokens[1]);
-		if(!sm.stationExists(stopStationId.toString())){
+		if(!sm.contains(stopStationId.toString())){
 			throw new TCSException("Invalid stop station id: "+stopStationId+" for route: "+routeNum);
 		}
 		Integer numSegments = Integer.parseInt(paramTokens[2]);
 		System.out.println("route number:"+routeNum+"Start station id:"+startStationId+" stopStationId: "+stopStationId+" number of segments: "+numSegments);
-		Station startStation = sm.getStation(startStationId.toString());
-		Station endStation = sm.getStation(stopStationId.toString());
+		Station startStation = sm.get(startStationId.toString());
+		Station endStation = sm.get(stopStationId.toString());
 		Route route = new Route(routeNum, Status.OPEN, null, startStation, endStation, numSegments);
-		rm.addRoute(route);
+		rm.add(route);
 		
 	}
 }

@@ -21,10 +21,10 @@ public class RouteManager {
 	public RouteManager(){
 		routes = new HashMap<Integer, Route>();
 	}
-	public void addRoute(Route route){
+	public void add(Route route){
 		routes.put(route.getRouteId(), route);
 	}
-	public Route getRoute(Integer routeId) throws TCSException{
+	public Route get(Integer routeId) throws TCSException{
 		if(!contains(routeId)){
 			throw new TCSException("route",routeId);
 		}

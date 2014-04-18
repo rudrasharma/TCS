@@ -16,18 +16,18 @@ public class StationManager {
 	public StationManager(){
 		stations = new HashMap<>();
 	}
-	public void addStation(Station station){
+	public void add(Station station){
 		stations.put(station.getStationId(), station);
 	}
 	
-	public Station getStation(String stationId){
+	public Station get(String stationId){
 		Station station = null;
 		if(stations.containsKey(stationId)){
 			station = stations.get(stationId);
 		}
 		return station;
 	}
-	public boolean stationExists(String stationId){
+	public boolean contains(String stationId){
 		return stations.containsKey(stationId);
 	}
 	

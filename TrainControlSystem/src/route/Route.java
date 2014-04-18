@@ -31,10 +31,13 @@ public class Route {
 		this.start = start;
 		this.end = end;
 		segments = new HashMap<>();
-		for(int i=1;i<=numberOfSegments;i++){
-			Segment segment = new Segment(i);
-			segments.put(i, segment);			
+		int segmentOrder = 0;
+		segments.put(segmentOrder, start.getPlatform());
+		for(segmentOrder=1;segmentOrder<=numberOfSegments;segmentOrder++){
+			Segment segment = new Segment(segmentOrder);
+			segments.put(segmentOrder, segment);			
 		}
+		segments.put(++segmentOrder, end.getPlatform());
 		
 	}
 	

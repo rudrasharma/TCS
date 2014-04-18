@@ -1,9 +1,13 @@
 package core;
 
+import segment.Segment;
+
 public class Station {
 	private String stationId;
 	private Status status;
 	private Time closeTime;
+	private Segment platform;
+	private static final int DEFAULT_PLATFORM_SEGMENT_ID = 0;
 	/**
 	 * @param stationId
 	 * @param status
@@ -13,6 +17,8 @@ public class Station {
 		this.stationId = stationId;
 		this.status = status;
 		this.closeTime = closeTime;
+		this.platform = new Segment(DEFAULT_PLATFORM_SEGMENT_ID);
+		
 	}
 	
 	public Station(String stationId) {
@@ -107,5 +113,10 @@ public class Station {
 		return "Station [stationId=" + stationId + ", status=" + status
 				+ ", closeTime=" + closeTime + "]";
 	}
+
+	public Segment getPlatform() {
+		return platform;
+	}
+
 	
 }
