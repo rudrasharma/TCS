@@ -82,7 +82,7 @@ public class TCSSimulator {
 			try {
 				eventList = generateList(fileLocation);
 				processEvents(eventList);
-				System.out.println(eventList.toString());
+				//System.out.println(eventList.toString());
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
 			} catch (IOException e) {

@@ -1,5 +1,7 @@
 package core;
 
+import common.TCSException;
+
 import segment.Segment;
 
 public class Train {
@@ -20,7 +22,18 @@ public class Train {
 		String[] tokens = data.split("[()]");
 		this.trainId = new Integer(tokens[1]).intValue();
 	}
-
+	public boolean move() throws TCSException{
+		if(onSegment.getNext() == null){
+			throw new TCSException("The next segment is undefined");
+		}
+		boolean success = false;
+		if(onSegment.getNext().getEntrySignal() == Signal.GREEN){
+			onSegment.setHoldingTrain(false);
+			onSegment.getNext().setHoldingTrain(true);
+			success = true;
+		}
+		return success;
+	}
 
 	/**
 	 * @return the trainId

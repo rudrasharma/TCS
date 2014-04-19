@@ -35,9 +35,11 @@ public class Route {
 		segments.put(segmentOrder, start.getPlatform());
 		for(segmentOrder=1;segmentOrder<=numberOfSegments;segmentOrder++){
 			Segment segment = new Segment(segmentOrder);
-			segments.put(segmentOrder, segment);			
+			segments.put(segmentOrder, segment);
+			segments.get(segmentOrder-1).setNext(segment);
 		}
 		segments.put(segmentOrder, end.getPlatform());
+		segments.get(segmentOrder-1).setNext(end.getPlatform());
 		
 	}
 	

@@ -83,7 +83,7 @@ public class ConfigLoader {
 			String stationId = removeSuffix(Suffix.STATION, line);
 			Station station = new Station(stationId, Status.OPEN, null);
 			sm.add(station);
-			System.out.println(stationId);
+			//System.out.println(stationId);
 	}
 	/**
 	 * @param stations

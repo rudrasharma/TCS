@@ -1,6 +1,5 @@
 package core;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import route.Route;
@@ -71,7 +70,7 @@ public class Journey {
 	private void validateRoute(Time startTime, Station start, Station end,
 			List<Station> stops, List<Route> routes)
 			throws InvalidJourneyException {
-		if(routes == null || routes.size()<=1) {
+		if(routes == null || routes.size()<1) {
 			throw new InvalidJourneyException("The number of routes should be greater than or equal to 1");
 		}
 		if(startTime.getUnit()<= 0){

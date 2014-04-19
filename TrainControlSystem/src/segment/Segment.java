@@ -14,21 +14,8 @@ public class Segment {
 		this.segmentId = segmentId;
 		holdingTrain = false;
 	}
-	protected boolean traverse() throws TCSException{
-		if(next == null){
-			throw new TCSException("The next segment is undefined");
-		}
-		boolean success = false;
-		if(next.getEntrySignal() == Signal.GREEN){
-			this.holdingTrain = false;
-			next.setHoldingTrain(true);
-			success = true;
-		}
-		return success;
-		
-	}
 	
-	protected Signal getEntrySignal() throws TCSException{
+	public Signal getEntrySignal() throws TCSException{
 		if(!holdingTrain){
 			return Signal.GREEN;
 		}
