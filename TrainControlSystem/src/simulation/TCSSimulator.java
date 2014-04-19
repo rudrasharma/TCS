@@ -137,7 +137,7 @@ public class TCSSimulator {
 		}
 		
 	}
-	private static void processJourney(String eventData) throws TCSException, InvalidJourneyException {
+	private static void processJourney(String eventData) throws TCSException {
 		String[] tokens = eventData.split("[,()]");
 		
 		int trainId =new Integer(tokens[1]).intValue();
@@ -163,13 +163,20 @@ public class TCSSimulator {
 		List<Station> stops = new ArrayList<Station>();
 		for (;i<tokens.length && !tokens[i].trim().isEmpty(); i++)
 		{
+			System.out.print(" Stop station:"+tokens[i]);
 			stops.add(sm.get(tokens[i]));
 		}
-		Journey journey = new Journey(start,
-				routes.get(0).getStart(),
-				routes.get(routes.size()).getEnd(),
-				stops,
-				routes);
+		System.out.println();
+		try {
+			Journey journey = new Journey(start,
+					routes.get(0).getStart(),
+					routes.get(routes.size()-1).getEnd(),
+					stops,
+					routes,
+					train);
+		} catch (InvalidJourneyException e) {
+			System.out.println("The following journey cound not be processed:"+eventData+" due to the following issue: \n"+e.getMessage());
+		}
 		
 	}
 	private static int extractId(String eventData) {

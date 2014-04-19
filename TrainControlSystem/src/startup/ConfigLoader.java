@@ -81,7 +81,7 @@ public class ConfigLoader {
 	}
 	private void processStation(String line) {
 			String stationId = removeSuffix(Suffix.STATION, line);
-			Station station = new Station(stationId, Status.CLOSED, null);
+			Station station = new Station(stationId, Status.OPEN, null);
 			sm.add(station);
 			System.out.println(stationId);
 	}
@@ -114,18 +114,18 @@ public class ConfigLoader {
 			Integer routeNum = extractId(Suffix.ROUTE, routeName);
 			String routeParam = tokens[1];
 			String[] paramTokens = routeParam.split(PARAM_DELIMITOR);
-			Integer startStationId = extractId(Suffix.STATION, paramTokens[0]);
+			String startStationId = removeSuffix(Suffix.STATION, paramTokens[0]);
 			if(!sm.contains(startStationId.toString())){
 				throw new TCSException("Invalid start station id :"+startStationId+" for route: "+routeNum);
 			}
-			Integer stopStationId = extractId(Suffix.STATION, paramTokens[1]);
+			String stopStationId = removeSuffix(Suffix.STATION, paramTokens[1]);
 			if(!sm.contains(stopStationId.toString())){
 				throw new TCSException("Invalid stop station id: "+stopStationId+" for route: "+routeNum);
 			}
 			Integer numSegments = Integer.parseInt(paramTokens[2]);
 			System.out.println("route number:"+routeNum+"Start station id:"+startStationId+" stopStationId: "+stopStationId+" number of segments: "+numSegments);
-			Station startStation = sm.get(startStationId.toString());
-			Station endStation = sm.get(stopStationId.toString());
+			Station startStation = sm.get(startStationId);
+			Station endStation = sm.get(stopStationId);
 			Route route = new Route(routeNum, Status.OPEN, null, startStation, endStation, numSegments);
 			rm.add(route);
 		}catch(TCSException e){

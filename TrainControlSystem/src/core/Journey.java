@@ -17,7 +17,7 @@ public class Journey {
 
 
 	public Journey(Time startTime, Station start, Station end, List<Station> stops, 
-			List<Route> routes) throws InvalidJourneyException{		
+			List<Route> routes, Train train) throws InvalidJourneyException{		
 		
 		validateRoute(startTime, start, end, stops, routes);
 		this.startTime = startTime;
@@ -25,9 +25,10 @@ public class Journey {
 		this.end = end;
 		this.stops = stops;
 		this.routes = routes;
+		this.train = train;
 	}	
 	
-	public Journey(String data) {
+	/*public Journey(String data) {
 		String[] tokens = data.split("[,()]");
 		
 		int trainId =new Integer(tokens[1]).intValue();
@@ -57,7 +58,7 @@ public class Journey {
 			this.stops.add(new Station(tokens[i]));
 		}
 		
-	}
+	}*/
 	
 	/**
 	 * @param startTime
@@ -87,9 +88,11 @@ public class Journey {
 		if(end.getStatus() == Status.CLOSED){
 			throw new InvalidJourneyException("End station", end.getStationId());
 		}
-		for(Station station: stops){
-			if(station.getStatus() == Status.CLOSED) {
-				throw new InvalidJourneyException("Stop station", station.getStationId());
+		if(!stops.isEmpty()) {
+			for(Station station: stops){
+				if(station.getStatus() == Status.CLOSED) {
+					throw new InvalidJourneyException("Stop station", station.getStationId());
+				}
 			}
 		}
 	}

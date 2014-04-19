@@ -21,9 +21,9 @@ public class Station {
 		
 	}
 	
-	public Station(String stationId) {
+	/*public Station(String stationId) {
 		this.stationId = stationId;
-	}
+	}*/
 
 	/**
 	 * @return the stationId
