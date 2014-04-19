@@ -5,7 +5,8 @@ public enum Event
 	OPEN_ROUTE("OpenRoute"), 
 	CLOSE_ROUTE("CloseRoute"), 
 	SUBMIT_JOURNEY("SubmitJourney"), 
-	RESTART("Restart"), STOP("Stop"), 
+	RESTART("Restart"), 
+	STOP("Stop"), 
 	CLOCK_TICK("end");
 
 	String name;

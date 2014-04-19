@@ -37,7 +37,7 @@ public class Route {
 			Segment segment = new Segment(segmentOrder);
 			segments.put(segmentOrder, segment);			
 		}
-		segments.put(++segmentOrder, end.getPlatform());
+		segments.put(segmentOrder, end.getPlatform());
 		
 	}
 	
@@ -67,7 +67,7 @@ public class Route {
 	public Status getStatus() {
 		return status;
 	}
-	protected void setStatus(Status status) {
+	public void setStatus(Status status) {
 		this.status = status;
 	}
 	/**
@@ -90,7 +90,16 @@ public class Route {
 	public Station getEnd() {
 		return end;
 	}
-
+	public Segment getSegment(Integer sequence){
+		Segment segment = null;
+		if(containsSegment(sequence)){
+			segment = segments.get(sequence);
+		}
+		return segment;
+	}
+	public boolean containsSegment(Integer sequence){
+		return segments.containsKey(sequence);
+	}
 	public Integer getNextSegementId(Integer currentSegment) {
 		Integer nextSegId = null;
 		if(!(currentSegment>segments.size())){

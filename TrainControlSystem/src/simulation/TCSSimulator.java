@@ -9,8 +9,24 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
 
+import common.InvalidJourneyException;
+import common.TCSException;
+import core.Journey;
+import core.Station;
+import core.StationManager;
+import core.Status;
+import core.Time;
+import core.Train;
+import core.TrainManager;
+import route.Route;
+import route.RouteManager;
+import startup.ConfigLoader;
+
 
 public class TCSSimulator {
+	private static RouteManager rm = RouteManager.getInstance();
+	private static StationManager sm = StationManager.getInstance();
+	private static TrainManager tm = TrainManager.getInstance();
 	private static List<Entry<Event, String>> generateList(String location)
 			throws IOException {
 		List<Entry<Event, String>> eventList = new ArrayList<>();
@@ -47,67 +63,120 @@ public class TCSSimulator {
 		return eventEntry;
 		
 	}
-	/*private Event getEvent(String line){
-		if (line != null && !line.isEmpty()) {
-			if (line.startsWith(Event.SUBMIT_JOURNEY.getName())) {
-				event = Event.SUBMIT_JOURNEY;
-				data = new Journey(line.substring(Event.SUBMIT_JOURNEY
-						.getName().length()));
-			} else if (line.startsWith(Event.OPEN_ROUTE.getName())) {
-				event = Event.OPEN_ROUTE;
-				data = new Route(line.substring(Event.OPEN_ROUTE
-						.getName().length()));
-			} else if (line.startsWith(Event.CLOSE_ROUTE.getName())) {
-				event = Event.CLOSE_ROUTE;
-				data = new Route(line.substring(Event.CLOSE_ROUTE
-						.getName().length()));
-			} else if (line.startsWith(Event.RESTART.getName())) {
-				event = Event.RESTART;
-				data = new Train(line.substring(Event.RESTART
-						.getName().length()));
-			} else if (line.startsWith(Event.STOP.getName())) {
-				event = Event.STOP;
-				data = new Train(line.substring(Event.STOP.getName()
-						.length()));
-			} else if (line.startsWith(Event.CLOCK_TICK.getName())) {
-				event = Event.CLOCK_TICK;
-			}
-		}		
-	}*/
-	public static void main(String[] args) {
-		String fileLocation = null;
-		if (args != null && args.length > 0) {
-			fileLocation = args[0];
-		} else {
-			System.out
-					.println("Please provide the input simulation file location");
-			System.exit(1);
-		}
 
-		List<Entry<Event, String>> eventList = null;
-
+	public static void main(String[] args) throws TCSException, InvalidJourneyException {
+		ConfigLoader configLoader = new ConfigLoader();
 		try {
-			eventList = generateList(fileLocation);
-			processEvents(eventList);
-			System.out.println(eventList.toString());
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+			configLoader.load();
+			String fileLocation = null;
+			if (args != null && args.length > 0) {
+				fileLocation = args[0];
+			} else {
+				System.out
+						.println("Please provide the input simulation file location");
+				System.exit(1);
+			}
 
-	}
-	private static void processEvents(List<Entry<Event, String>> eventList) {
+			List<Entry<Event, String>> eventList = null;
+
+			try {
+				eventList = generateList(fileLocation);
+				processEvents(eventList);
+				System.out.println(eventList.toString());
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		} catch (IOException e1) {
+
+
+		}
+		}
+	private static void processEvents(List<Entry<Event, String>> eventList) throws TCSException, InvalidJourneyException   {
 		for(Entry<Event,String> entry: eventList){
 			Event event = entry.getKey();
 			String eventData = entry.getValue();
-			/*Event.CLOCK_TICK
-			switch(event.getName()){
-			case Event.
-			
-			}*/
+			int id;
+			switch(event){
+				case OPEN_ROUTE: 
+					id = extractId(eventData);
+				try {
+					rm.get(id).setStatus(Status.OPEN);
+				} catch (TCSException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+					System.out.println("event:"+event.getName()+" id:"+id);
+					break;
+				case CLOSE_ROUTE: 
+					id = extractId(eventData);
+					try {
+						rm.get(id).setStatus(Status.CLOSED);
+					} catch (TCSException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					System.out.println("event:"+event.getName()+" id:"+id);
+					break;
+
+				case RESTART:
+					id = extractId(eventData);
+					System.out.println("event:"+event.getName()+" id:"+id);
+					break;
+				 case STOP:
+						id = extractId(eventData);
+						System.out.println("event:"+event.getName()+" id:"+id);
+						break;
+					 
+				case SUBMIT_JOURNEY:
+					processJourney(eventData);
+				default:
+					break;
+			}
 		}
 		
+	}
+	private static void processJourney(String eventData) throws TCSException, InvalidJourneyException {
+		String[] tokens = eventData.split("[,()]");
+		
+		int trainId =new Integer(tokens[1]).intValue();
+		Train train = tm.get(trainId);
+		
+		int startTime = new Integer(tokens[2]).intValue();
+		Time start = new Time(startTime);
+		
+		//Start index for routes from the split tokens
+		int i=4;
+		
+		List<Route> routes = new ArrayList<>();
+		int routeId = 0;
+		for (;i<tokens.length && !tokens[i].trim().isEmpty() && i< tokens.length; i++)
+		{
+			routeId = new Integer(tokens[i]).intValue();
+			routes.add(rm.get(routeId));
+		}
+		
+		//Go two indexes to get station id's
+		i = i+2;
+		
+		List<Station> stops = new ArrayList<Station>();
+		for (;i<tokens.length && !tokens[i].trim().isEmpty(); i++)
+		{
+			stops.add(sm.get(tokens[i]));
+		}
+		Journey journey = new Journey(start,
+				routes.get(0).getStart(),
+				routes.get(routes.size()).getEnd(),
+				stops,
+				routes);
+		
+	}
+	private static int extractId(String eventData) {
+		int id;
+		String[] tokens = eventData.split("[()]");
+		id = new Integer(tokens[1]).intValue();
+		return id;
 	}
 
 }
