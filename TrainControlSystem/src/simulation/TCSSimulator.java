@@ -48,6 +48,10 @@ public class TCSSimulator {
 				event = Event.OPEN_ROUTE;
 			} else if (line.startsWith(Event.CLOSE_ROUTE.getName())) {
 				event = Event.CLOSE_ROUTE;
+			} else if (line.startsWith(Event.OPEN_STATION.getName())) {
+				event = Event.OPEN_STATION;
+			} else if (line.startsWith(Event.CLOSE_STATION.getName())) {
+				event = Event.CLOSE_STATION;
 			} else if (line.startsWith(Event.RESTART.getName())) {
 				event = Event.RESTART;
 			} else if (line.startsWith(Event.STOP.getName())) {
@@ -98,6 +102,7 @@ public class TCSSimulator {
 			Event event = entry.getKey();
 			String eventData = entry.getValue();
 			int id;
+			String stationId;
 			switch(event){
 				case OPEN_ROUTE: 
 					id = extractId(eventData);
@@ -113,6 +118,26 @@ public class TCSSimulator {
 					id = extractId(eventData);
 					try {
 						rm.get(id).setStatus(Status.CLOSED);
+					} catch (TCSException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					System.out.println("event:"+event.getName()+" id:"+id);
+					break;
+				case OPEN_STATION: 
+					stationId = extractStationId(eventData);
+				try {
+					sm.get(stationId).setStatus(Status.OPEN);
+				} catch (TCSException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+					System.out.println("event:"+event.getName()+" id:"+id);
+					break;
+				case CLOSE_STATION: 
+					stationId = extractStationId(eventData);
+					try {
+						sm.get(stationId).setStatus(Status.CLOSED);
 					} catch (TCSException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -183,6 +208,13 @@ public class TCSSimulator {
 		int id;
 		String[] tokens = eventData.split("[()]");
 		id = new Integer(tokens[1]).intValue();
+		return id;
+	}
+	
+	private static String extractStationId(String eventData) {
+		String id;
+		String[] tokens = eventData.split("[()]");
+		id = tokens[1].trim();
 		return id;
 	}
 

@@ -1,0 +1,9 @@
+SubmitJourney(465,1,(1001),(10011-STA1))
+SubmitJourney(300,2,(1001),(10011-STA1))
+end
+CloseStation(10011-STA1)
+end
+end
+OpenStation(10011-STA1)
+end
+end

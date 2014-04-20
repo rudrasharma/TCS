@@ -4,6 +4,8 @@ public enum Event
 {	
 	OPEN_ROUTE("OpenRoute"), 
 	CLOSE_ROUTE("CloseRoute"), 
+	OPEN_STATION("OpenStation"), 
+	CLOSE_STATION("CloseStation"), 
 	SUBMIT_JOURNEY("SubmitJourney"), 
 	RESTART("Restart"), 
 	STOP("Stop"), 

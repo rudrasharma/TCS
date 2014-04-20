@@ -1,0 +1,13 @@
+CloseRoute(1005)
+SubmitJourney(465,1,(1004),(10043-STA1,10045-STA2))
+SubmitJourney(300,2,(1005),(10052-STA1))
+end
+end
+end
+OpenRoute(1005)
+end
+CloseStation(10052-STA1)
+end
+OpenStation(10052-STA1)
+end
+end
