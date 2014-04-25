@@ -1,7 +1,0 @@
-// FoCoSys example from the class TMCS project / requirements document.
-FoCoSys[
-  {0000:FTCL;LGMT:4}
-  {0001:LGMT;FTCL:3}
-  {0002:LGMT;BOLD:2}
-  {0005:BOLD;FTCL:5}
-]
