@@ -1,0 +1,14 @@
+Java TMCS TODOs:
+
+  1. Create textual output of entire running state of the system per simulation
+     loop. (Nearly Complete)
+  2. Handle case where two submit journeys events in the same simulation
+     loop start at the same start station.
+  3. Handle time duration of close route and station events.
+  4. Understand ChangeLight(...) system output event.
+     a. Need to implement
+     b. Possibly change the event system to using observer pattern with
+        listeners instead of pushing the events via method calls to system map.
+     
+Alloy Model TODOs:
+  1. Possibly order routes.
