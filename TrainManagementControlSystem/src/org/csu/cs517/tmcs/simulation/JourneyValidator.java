@@ -96,7 +96,7 @@ public class JourneyValidator {
     if (!this.validateNoClosedStations(trainId, stops)) {
       return false;
     }
-    if (!this.validateEachStopInRoutes(trainId, routes, stops)) {
+    if (!this.validateStopStationsInRoutes(trainId, routes, stops)) {
       return false;
     }
     return true;
@@ -152,23 +152,27 @@ public class JourneyValidator {
     return true;
   }
 
-  private boolean validateEachStopInRoutes(String trainId, List<Route> routes,
+  private boolean validateStopStationsInRoutes(String trainId, List<Route> routes,
       List<Station> stations) {
+    Station stationNotInRoutes = null;
     for (Station s : stations) {
-      Station stationNotInRoutes = null;
+      boolean found = false;
       for (Route r : routes) {
         if (r.getStartStation() == s) {
-          stationNotInRoutes = s;
+          found = true;
           break;
         }
       }
-      if (stationNotInRoutes != null) {
-        this.postValidationMessage = "Stop station "
-            + s
-            + " is not a station in the list of journey routes submitted by train "
-            + trainId + ".";
-        return false;
+      if (!found) {
+        stationNotInRoutes = s;
       }
+    }
+    if (stationNotInRoutes != null) {
+      this.postValidationMessage = "Stop station "
+          + stationNotInRoutes
+          + " is not a station in the list of journey routes submitted by train "
+          + trainId + ".";
+      return false;
     }
     return true;
   }
