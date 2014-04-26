@@ -112,7 +112,7 @@ public class Tmcs {
   }
 
   private static void runSimulationLoop() {
-    Tmcs.printSystemState(false);
+    Tmcs.printSystemState(true);
     InputEvent currentEvent = eventQueue.getNextEvent();
     while (currentEvent != null) {
       if (currentEvent instanceof SubmitJourney) {
@@ -143,10 +143,12 @@ public class Tmcs {
         Tmcs.inputEventsProcessed.clear();
         Tmcs.outputChangeLightEvents.clear();
       }
-      Tmcs.inputEventsProcessed.add(currentEvent);
       currentEvent = eventQueue.getNextEvent();
+      if (currentEvent != null) {
+        Tmcs.inputEventsProcessed.add(currentEvent);
+      }
     }
-    Tmcs.printSystemState(true);
+    Tmcs.printSystemState(false);
   }
   
   private static void submitJourney(SubmitJourney submitJourney) {
@@ -226,12 +228,12 @@ public class Tmcs {
     }
   }
   
-  private static void printSystemState(boolean isSimulationEnd) {
+  private static void printSystemState(boolean isSimulationStart) {
   	StringBuilder sb = new StringBuilder();
-  	if (!isSimulationEnd) {
-  		sb.append("Start of simulation loop" + Strings.NL);
+  	if (isSimulationStart) {
+  		sb.append("Start of Simulation" + Strings.NL);
   	} else {
-  		sb.append("End of Simulation" + Strings.NL);
+  		sb.append("End of Simulation Loop" + Strings.NL);
   	}
   	sb.append("System Time: " + CurrentTmcsTime.get() + Strings.NL);
   	buildInputEventsHandledPrintString(sb);
