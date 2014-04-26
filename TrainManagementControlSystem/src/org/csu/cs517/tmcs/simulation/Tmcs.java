@@ -198,15 +198,29 @@ public class Tmcs {
   }
   
   private static void switchTrafficLights(Segment previous, Segment current) {
+    // Switch platform light from red to green if a train is on the platform
+    // and the trains journey dictates that its next route is a route with
+    // no train on the first segment of that route. That is, the train can
+    // proceed onto a route where is first segment is not occupied.
+    if (current.getStation() != null &&
+        current.getTrafficLightColor() == TrafficLightColor.RED &&
+        current.getOccupiedBy() != null) {
+      Route trainsNextRoute = current.getOccupiedBy().getNextRoute();
+      if (trainsNextRoute.getSegments().get(0).getOccupiedBy() == null) {
+        ChangeLight cl = new ChangeLight(current, TrafficLightColor.GREEN);
+        SystemEventGenerator.getInstance().generateChangeLightEvent(cl);
+      }
+    }
+    
     List<Segment> previousSegments = Tmcs.railroadSystemMap
         .getPrevious(current);
-    // Turn the previous segments red
+    // Turn previous segments red
     for (Segment pSegment : previousSegments) {
       ChangeLight cl = new ChangeLight(pSegment, TrafficLightColor.RED);
       SystemEventGenerator.getInstance().generateChangeLightEvent(cl);
     }
 
-    // Turn the previous of the previous lights to green unless the segment
+    // Turn previous of previous lights to green unless the segment
     // is the platform of a station and there is at least one train on the
     // the first segment of an outgoing route.
     List<Segment> previousPreviousSegments = Tmcs.railroadSystemMap

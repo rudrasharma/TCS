@@ -41,23 +41,9 @@ public class Segment {
   }
   
   /**
-   * @return The current traffic light color unless a train is on a platform
-   *         segment, then the journey is inspected to see if its next route can
-   *         proceed to an outgoing route where the first segment is not
-   *         occupied by a train.
+   * @return {@link #getTrafficLightColor()}
    */
   public TrafficLightColor getTrafficLightColor() {
-    if (this.platformOfStation != null && 
-        this.occupiedBy != null && 
-        this.trafficLight.getColor() == TrafficLightColor.RED) {
-      // Special case to check where a train is on a station platform
-      // and its journey indicates that it can proceed onto a route where
-      // the first segment of its next route is not occupied by a train.
-      Route route = this.occupiedBy.getNextRoute();
-      if (route != null && route.getSegments().get(0).occupiedBy != null) {
-        return TrafficLightColor.GREEN;
-      }
-    }
     return this.trafficLight.getColor();
   }
 
