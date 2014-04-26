@@ -167,6 +167,7 @@ public class Tmcs {
     Segment platform = startStation.getPlatform();
     String trainId = submitJourney.getTrainId();
     Train train = new Train(trainId, platform);
+    train.setJourney(journey);
     Tmcs.trains.put(trainId, train);
   }
   
