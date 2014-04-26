@@ -71,6 +71,13 @@ public class JourneyValidator {
     if (validJourney) {
       Journey j = new Journey(startTime, CurrentTmcsTime.get(), startStation,
           endStation, stops, routes);
+      if (this.trainExists) {
+        this.postValidationMessage = "Journey is valid.";
+      } else {
+        this.postValidationMessage = "Journey is valid, but train " + trainId
+            + " will be created at placed at start station "
+            + startStation + ".";
+      }
       return j;
     }
     return null;
@@ -84,8 +91,9 @@ public class JourneyValidator {
     return postValidationMessage;
   }
 
-  private boolean validate(Time startTime, String trainId, Station startStation,
-      Station endStation, List<Route> routes, List<Station> stops) {
+  private boolean validate(Time startTime, String trainId,
+      Station startStation, Station endStation, List<Route> routes,
+      List<Station> stops) {
     this.postValidationMessage = null;
     if (!this.validateTrainAtStartStation(trainId, startStation)) {
       return false;
@@ -102,7 +110,8 @@ public class JourneyValidator {
     return true;
   }
 
-  private boolean validateTrainAtStartStation(String trainId, Station startStation) {
+  private boolean validateTrainAtStartStation(String trainId,
+      Station startStation) {
     Train tmcsTrain = this.tmcsTrains.get(trainId);
     Train trainInStartStation = startStation.getPlatform().getOccupiedBy();
     if (tmcsTrain == null) {
@@ -140,7 +149,8 @@ public class JourneyValidator {
     return true;
   }
 
-  private boolean validateNoClosedStations(String trainId, List<Station> stations) {
+  private boolean validateNoClosedStations(String trainId,
+      List<Station> stations) {
     for (Station s : stations) {
       if (s.getAvailability() == Availability.CLOSED) {
         this.postValidationMessage = "Train " + trainId
@@ -152,8 +162,8 @@ public class JourneyValidator {
     return true;
   }
 
-  private boolean validateStopStationsInRoutes(String trainId, List<Route> routes,
-      List<Station> stations) {
+  private boolean validateStopStationsInRoutes(String trainId,
+      List<Route> routes, List<Station> stations) {
     Station stationNotInRoutes = null;
     for (Station s : stations) {
       boolean found = false;
