@@ -116,7 +116,7 @@ public class Train {
   
   public boolean atEndOfJourney() {
     Station endStation = this.journey.getEndStation();
-    if (endStation.getPlatform() == this.onSegment) {
+    if (endStation.getPlatform() == this.onSegment && routeIdx > 0) {
       return true;
     } else {
       return false;

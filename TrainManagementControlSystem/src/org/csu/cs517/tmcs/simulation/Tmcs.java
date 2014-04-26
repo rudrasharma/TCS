@@ -268,7 +268,7 @@ public class Tmcs {
     sb.append("Trains:" + Strings.NL);
   	sb.append("                                         Journey  Journey   Journey  Journey" + Strings.NL);
   	sb.append("         Is      On      On       At      Wait    Approved   Start     End" + Strings.NL);
-  	sb.append("Train  Stopped  Route  Segment  Station   Time     Time     Station  Station" + Strings.NL);
+  	sb.append("Train  Stopped  Route  Segment  Station   Time      Time    Station  Station" + Strings.NL);
   	sb.append("-----  -------  -----  -------  -------  -------  --------  -------  -------" + Strings.NL);
   	for (Entry<String, Train> tEntry : Tmcs.trains.entrySet()) {
   		Train train = tEntry.getValue();
