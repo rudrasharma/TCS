@@ -155,8 +155,19 @@ public class Tmcs {
     submitJourney.setValidationMessage(validationMessage);
     boolean trainExists = Tmcs.journeyValidator.trainExists();
     if(!trainExists && journey != null) {
-      
+      // A train with this ID doesn't exist, so create it in the system.
+      // Generate a new train at start station of Journey
+      createTrainInSystem(submitJourney, journey);
     }
+  }
+
+  private static void createTrainInSystem(
+      SubmitJourney submitJourney, Journey journey) {
+    Station startStation = journey.getStartStation();
+    Segment platform = startStation.getPlatform();
+    String trainId = submitJourney.getTrainId();
+    Train train = new Train(trainId, platform);
+    Tmcs.trains.put(trainId, train);
   }
   
   private static void restartTrain(Restart restart) {

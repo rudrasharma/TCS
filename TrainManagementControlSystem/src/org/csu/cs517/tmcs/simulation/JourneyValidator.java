@@ -74,9 +74,8 @@ public class JourneyValidator {
       if (this.trainExists) {
         this.postValidationMessage = "Journey is valid.";
       } else {
-        this.postValidationMessage = "Journey is valid, but train " + trainId
-            + " will be created at placed at start station "
-            + startStation + ".";
+        this.postValidationMessage = "Journey is valid. A new train " + trainId
+            + " is placed at start station " + startStation + ".";
       }
       return j;
     }
@@ -130,9 +129,9 @@ public class JourneyValidator {
     } else {
       // Else there is a train in the start station that is not the train
       // submitting the journey.
-      this.postValidationMessage = "There is already a train " + trainId
-          + " at start station " + startStation + ", which is not train "
-          + trainId + "that submitted the journey.";
+      this.postValidationMessage = "Journey is rejected. Train " + trainId
+          + " cannot start at station " + startStation + " becuase train "
+          + trainInStartStation + " already occupies this station.";
       return false;
     }
   }
@@ -140,8 +139,8 @@ public class JourneyValidator {
   private boolean validateNoClosedRoutes(String trainId, List<Route> routes) {
     for (Route route : routes) {
       if (route.getAvailability() == Availability.CLOSED) {
-        this.postValidationMessage = "Train " + trainId
-            + " is submitting a journey with route " + route
+        this.postValidationMessage = "Journey is rejected. Train " + trainId
+            + " is submitted journey with a route " + route
             + " that is currently closed.";
         return false;
       }
@@ -153,8 +152,8 @@ public class JourneyValidator {
       List<Station> stations) {
     for (Station s : stations) {
       if (s.getAvailability() == Availability.CLOSED) {
-        this.postValidationMessage = "Train " + trainId
-            + " is submitting a journey where stop station " + s
+        this.postValidationMessage = "Journey is rejected. Train " + trainId
+            + " is submitted journey where stop station " + s
             + " is currently closed.";
         return false;
       }
@@ -178,7 +177,7 @@ public class JourneyValidator {
       }
     }
     if (stationNotInRoutes != null) {
-      this.postValidationMessage = "Stop station "
+      this.postValidationMessage = "Journey rejected. Stop station "
           + stationNotInRoutes
           + " is not a station in the list of journey routes submitted by train "
           + trainId + ".";
