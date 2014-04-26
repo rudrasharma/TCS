@@ -49,10 +49,9 @@ public class Train {
       return false;
     }
     // The train wait time is less than the current time - approved time
-    int waitTimeUnits = this.journey.getWaitTimeTillStart().getUnits();
-    int approvalTimeUnits = approvalTime.getUnits();
-    int currentTimeUnits = CurrentTmcsTime.get().getUnits();
-    if (waitTimeUnits > (currentTimeUnits - approvalTimeUnits)) {
+    Time waitTime = this.journey.getWaitTimeTillStart();
+    Time currentTime = CurrentTmcsTime.get();
+    if (waitTime.greater(currentTime.sub(approvalTime))) {
       return false;
     }
     // Make sure the train is not at the end of its journey.

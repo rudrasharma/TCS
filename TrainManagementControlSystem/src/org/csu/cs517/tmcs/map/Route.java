@@ -82,7 +82,7 @@ public class Route implements ITimeIncremented {
   public void incremented(Time time) {
     if (this.startClose != null && this.duration != null
         && this.availability == Availability.CLOSED) {
-      if (time.subtract(this.startClose).greater(this.duration)) {
+      if (time.sub(this.startClose).greater(this.duration)) {
         this.availability = Availability.OPEN;
       }
     }

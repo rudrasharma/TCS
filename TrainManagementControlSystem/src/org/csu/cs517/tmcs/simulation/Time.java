@@ -36,7 +36,7 @@ public class Time {
   	return Integer.toString(units);
   }
 
-  public Time subtract(Time time) {
+  public Time sub(Time time) {
     return new Time(this.units - time.units);
   }
 }
