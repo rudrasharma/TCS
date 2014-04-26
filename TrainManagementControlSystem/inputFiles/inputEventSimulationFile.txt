@@ -1,7 +1,7 @@
-CloseRoute(0001)
 SubmitJourney(465,1,(0000,0002,0005),(BOLD))
 SubmitJourney(300,1,(0002,0005),(BOLD))
 SubmitJourney(200,1,(0002,0005),())
+CloseRoute(0001)
 //Route 0001 is closed, 3 trains have submitted journeys
 //Submitted journeys are approved
 end

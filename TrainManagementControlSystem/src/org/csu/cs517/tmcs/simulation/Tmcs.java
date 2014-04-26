@@ -114,6 +114,7 @@ public class Tmcs {
   private static void runSimulationLoop() {
     Tmcs.printSystemState(true);
     InputEvent currentEvent = eventQueue.getNextEvent();
+    Tmcs.inputEventsProcessed.add(currentEvent);
     while (currentEvent != null) {
       if (currentEvent instanceof SubmitJourney) {
         SubmitJourney submitJourney = (SubmitJourney)currentEvent;
