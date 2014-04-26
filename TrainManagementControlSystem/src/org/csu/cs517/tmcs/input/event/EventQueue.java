@@ -2,8 +2,9 @@ package org.csu.cs517.tmcs.input.event;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.PriorityQueue;
 import java.util.Queue;
+import java.util.Set;
+import java.util.TreeSet;
 
 public class EventQueue {
   Queue<InputEvent> queue = new LinkedList<>();
@@ -26,12 +27,12 @@ public class EventQueue {
    */
   private void setEventsIntoQueueByPriorityWithinSimulationLoops(
       List<InputEvent> events) {
-    PriorityQueue<InputEvent> priorityQueue = new PriorityQueue<>();
+    Set<InputEvent> set = new TreeSet<InputEvent>();
     for (InputEvent event : events) {
-      priorityQueue.add(event);
+      set.add(event);
       if (event instanceof End) {
-        this.queue.addAll(priorityQueue);
-        priorityQueue.clear();
+        this.queue.addAll(set);
+        set.clear();
       }
     }
   }  

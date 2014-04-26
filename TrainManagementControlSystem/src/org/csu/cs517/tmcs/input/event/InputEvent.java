@@ -1,9 +1,18 @@
 package org.csu.cs517.tmcs.input.event;
 
 
+
 public abstract class InputEvent implements Comparable<InputEvent> {
 
-  private int priority; //Lower number is higher priority.
+  //Lower number is higher priority within one simulation time unit.
+  private int priority;
+  
+  //A secondary ordering to the priority when prioties are equal.
+  //This will preserve the ordering of events received
+  private int orderEventReceived;
+  
+  private static int lastOrder = 0;
+  
   protected String args;
   protected StringBuffer tempStringBuffer = new StringBuffer();
   
@@ -19,6 +28,10 @@ public abstract class InputEvent implements Comparable<InputEvent> {
 
   public InputEvent(int priority, String args, ParseState initialState) {
     this.priority = priority;
+    this.orderEventReceived = lastOrder++;
+    if (this instanceof End) {
+      InputEvent.lastOrder = 0;
+    }
     this.args = args;
     this.currentState = initialState;
     this.parseArgumentsString();
@@ -34,6 +47,14 @@ public abstract class InputEvent implements Comparable<InputEvent> {
       return -1;
     } else if (this.priority > o.priority) {
       return 1;
+    } else if (this.priority == o.priority) {
+      if (this.orderEventReceived < o.orderEventReceived) {
+        return -1;
+      } else if (this.orderEventReceived > o.orderEventReceived) {
+        return 1;
+      } else {
+        return 0;
+      }
     }
     return 0;
   }

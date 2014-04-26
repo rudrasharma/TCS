@@ -105,8 +105,10 @@ public class SubmitJourney extends InputEvent {
       firstId = false;
     }
     sb.append("))");
-    sb.append("; Validation Message: " + Strings.NL + Strings.TAB
-        + this.postProcessedMessage);
+    if (this.postProcessedMessage != null) {
+      sb.append("; Validation Message: " + Strings.NL + Strings.TAB
+          + this.postProcessedMessage);
+    }
     return sb.toString();
   }
 
