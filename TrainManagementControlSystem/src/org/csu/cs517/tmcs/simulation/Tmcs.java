@@ -1,12 +1,13 @@
 package org.csu.cs517.tmcs.simulation;
 
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.TreeMap;
 
-import org.apache.log4j.Logger;
 import org.csu.cs517.tmcs.common.Strings;
 import org.csu.cs517.tmcs.input.event.CloseRoute;
 import org.csu.cs517.tmcs.input.event.CloseStation;
@@ -40,63 +41,64 @@ public class Tmcs {
   private static Map<String, Train> trains;
   private static RailroadSystemMap railroadSystemMap;
   private static EventQueue eventQueue;
-  private static Logger logger = Logger.getLogger(Tmcs.class);
+  //private static Logger logger = Logger.getLogger(Tmcs.class);
   private static List<InputEvent> inputEventsProcessed = new ArrayList<>();
   private static List<ChangeLight> outputChangeLightEvents = new ArrayList<>();
   private static JourneyValidator journeyValidator;
   
   public static void main(String[] args) {
     try {
-      Tmcs.init();
-      boolean noMenu = false;
-      if (args.length > 0 && args[0].equals("-nm")) {
-        noMenu = true;
-      }
-      RailroadSystemMapParser railroadSystemMapParser = null;
-      MainMenu mm = new MainMenu();
-      if (!noMenu) {
-        mm.printMainMenu();
-        Integer mainMenuSelection = mm.getNumericalInput(2);
-        if (mainMenuSelection.equals(2)) {
-          String systemDefFile = mm.getValidFile("System definition map");
-          railroadSystemMapParser = new RailroadSystemMapParser(systemDefFile);
-        } else {
-          railroadSystemMapParser = new RailroadSystemMapParser();
-        }
-      } else {
-        railroadSystemMapParser = new RailroadSystemMapParser();
-      }
+      Tmcs.init(args);
 
-      Tmcs.railroadSystemMap = railroadSystemMapParser.getMap();
-      // Print the system map
-      System.out.println(Tmcs.railroadSystemMap + Strings.NL);
-
-      EventParser eventParser = null;
-      if (!noMenu) {
-        mm.printEventMenu();
-        Integer eventMenuSelection = mm.getNumericalInput(2);
-        if (eventMenuSelection.equals(2)) {
-          String eventFile = mm.getValidFile("Event file");
-          // Load in Events
-          eventParser = new EventParser(eventFile);
-        } else {
-          eventParser = new EventParser();
-        }
-      } else {
-        eventParser = new EventParser();
-      }
-
-      eventQueue = eventParser.getEventQueue();
 
       runSimulationLoop();
     } catch (Exception e) {
       //logger.error(e); // This is complaining that log4j is not configured.
       e.printStackTrace();
     }
+    System.err.flush();
     System.out.println("Exiting TMCS Simulation");
+    System.out.flush();
   }
   
-  private static void init() {
+  private static void init(String[] args) throws IOException, ClassNotFoundException, NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+    boolean noMenu = false;
+    if (args.length > 0 && args[0].equals("-nm")) {
+      noMenu = true;
+    }
+    RailroadSystemMapParser railroadSystemMapParser = null;
+    MainMenu mm = new MainMenu();
+    if (!noMenu) {
+      mm.printMainMenu();
+      Integer mainMenuSelection = mm.getNumericalInput(2);
+      if (mainMenuSelection.equals(2)) {
+        String systemDefFile = mm.getValidFile("System definition map");
+        railroadSystemMapParser = new RailroadSystemMapParser(systemDefFile);
+      } else {
+        railroadSystemMapParser = new RailroadSystemMapParser();
+      }
+    } else {
+      railroadSystemMapParser = new RailroadSystemMapParser();
+    }
+
+    Tmcs.railroadSystemMap = railroadSystemMapParser.getMap();
+    // Print the system map
+    System.out.println(Tmcs.railroadSystemMap + Strings.NL);
+
+    EventParser eventParser;
+    if (!noMenu) {
+      mm.printEventMenu();
+      Integer eventMenuSelection = mm.getNumericalInput(2);
+      if (eventMenuSelection.equals(2)) {
+        String eventFile = mm.getValidFile("Event file");
+        // Load in Events
+        eventParser = new EventParser(eventFile);
+      } else {
+        eventParser = new EventParser();
+      }
+    } else {
+      eventParser = new EventParser();
+    }
     IChangeLightListener cl = new IChangeLightListener() {
       @Override
       public void lightChange(ChangeLight changeLight) {
@@ -106,6 +108,7 @@ public class Tmcs {
     SystemEventGenerator.getInstance().addChangeLightListener(cl);
     Tmcs.trains = new TreeMap<>();
     Tmcs.journeyValidator = new JourneyValidator(trains, railroadSystemMap);
+    eventQueue = eventParser.getEventQueue();
   }
 
   private static void runSimulationLoop() {
