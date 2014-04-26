@@ -112,14 +112,14 @@ public class RailroadSystemMap {
     Station startStation = this.stations.get(startStationId);
     if (startStation == null) {
       // Create the station if does not exist.
-      startStation = new Station(startStationId);
+      startStation = new Station(this, startStationId);
       this.stations.put(startStationId, startStation);
     }
     // Get existing station as end station for this route.
     Station endStation = this.stations.get(endStationId);
     if (endStation == null) {
       // Create the station if does not exist.
-      endStation = new Station(endStationId);
+      endStation = new Station(this, endStationId);
       this.stations.put(endStationId, endStation);
     }
     route.setStartStation(startStation);
@@ -155,24 +155,28 @@ public class RailroadSystemMap {
   
   public void openRoute(OpenRoute openRoute) {
     String routeId = openRoute.getRouteId();
-    this.routes.get(routeId).setOpen();
+    Route r = this.routes.get(routeId);
+    r.setOpen();
   }
   
   public void closeRoute(CloseRoute closeRoute) {
     String routeId = closeRoute.getRouteId();
     Time duration = closeRoute.getDuration();
-    this.routes.get(routeId).setClose(duration);
+    Route r = this.routes.get(routeId);
+    r.setClose(duration);
   }
   
   public void openStation(OpenStation openStation) {
     String stationId = openStation.getStationId();
-    this.stations.get(stationId).setOpen();
+    Station station = this.stations.get(stationId);
+    station.setOpen();
   }
   
   public void closeStation(CloseStation closeStation) {
     String stationId = closeStation.getStationId();
     Time duration = closeStation.getDuration();
-    this.stations.get(stationId).setClose(duration);  
+    Station station = this.stations.get(stationId);
+    station.setClose(duration);
   }
   
   public Route getRoute(String routeId) {

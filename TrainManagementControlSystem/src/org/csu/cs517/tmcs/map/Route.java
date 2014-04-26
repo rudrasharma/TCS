@@ -5,6 +5,8 @@ import java.util.List;
 import org.csu.cs517.tmcs.simulation.CurrentTmcsTime;
 import org.csu.cs517.tmcs.simulation.ITimeIncremented;
 import org.csu.cs517.tmcs.simulation.Time;
+import org.csu.cs517.tmcs.system.event.ChangeLight;
+import org.csu.cs517.tmcs.system.event.SystemEventGenerator;
 
 /**
  * Represent a one directional train track. Each route has a start station and
@@ -61,12 +63,28 @@ public class Route implements ITimeIncremented {
       this.startClose = CurrentTmcsTime.get();
     }
     this.availability = Availability.CLOSED;
+    // Change the first segment of the route to red only if there is no
+    // train on the first segment.
+    Segment firstSegment = this.getSegments().get(0);
+    if (firstSegment.getOccupiedBy() == null) {
+      ChangeLight cl = new ChangeLight(this.getSegments().get(0),
+          TrafficLightColor.RED);
+      SystemEventGenerator.getInstance().generateChangeLightEvent(cl);
+    }
   }
   
   public void setOpen() {
     this.duration = null;
     this.startClose = null;
     this.availability = Availability.OPEN;
+    Segment firstSeg = this.getSegments().get(0);
+    Segment nextSegs = firstSeg.getNext(0);
+    boolean trainOnNextSeg = nextSegs.getOccupiedBy() != null;
+    if (!trainOnNextSeg) {
+      // Only change the light if there is not a train on the next segment.
+      ChangeLight cl = new ChangeLight(firstSeg, TrafficLightColor.GREEN);
+      SystemEventGenerator.getInstance().generateChangeLightEvent(cl);
+    }
   }
   
   @Override
@@ -83,7 +101,7 @@ public class Route implements ITimeIncremented {
     if (this.startClose != null && this.duration != null
         && this.availability == Availability.CLOSED) {
       if (time.sub(this.startClose).greater(this.duration)) {
-        this.availability = Availability.OPEN;
+        this.setOpen();
       }
     }
   }
