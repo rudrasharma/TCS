@@ -1,7 +1,7 @@
 CloseRoute(0001)
 SubmitJourney(465,1,(0000,0002,0005),(BOLD))
 SubmitJourney(300,1,(0002,0005),(BOLD))
-//SubmitJourney(200,1,(0002,0005),())
+SubmitJourney(200,1,(0002,0005),())
 //Route 0001 is closed, 3 trains have submitted journeys
 //Submitted journeys are approved
 end
@@ -13,10 +13,10 @@ end
 // No input events are available in this loop
 end
 OpenRoute(0000)
-//SubmitJourney(243,1,(0000,0002,0005),(LGMT,BOLD))
+SubmitJourney(243,1,(0000,0002,0005),(LGMT,BOLD))
 Stop(465)
 end
-//SubmitJourney(343,2,(0000,0002,0005),(LGMT,BOLD))
+SubmitJourney(343,2,(0000,0002,0005),(LGMT,BOLD))
 Restart(465)
 Stop(300)
 end

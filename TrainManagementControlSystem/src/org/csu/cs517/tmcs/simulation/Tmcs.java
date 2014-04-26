@@ -45,27 +45,24 @@ public class Tmcs {
   private static List<ChangeLight> outputChangeLightEvents = new ArrayList<>();
   private static JourneyValidator journeyValidator;
   
-  static {
-    IChangeLightListener cl = new IChangeLightListener() {
-      @Override
-      public void lightChange(ChangeLight changeLight) {
-        Tmcs.outputChangeLightEvents.add(changeLight);
-      }
-    };
-    SystemEventGenerator.getInstance().addChangeLightListener(cl);
-    Tmcs.trains = new TreeMap<>();
-    Tmcs.journeyValidator = new JourneyValidator(trains, railroadSystemMap);
-  }
-
   public static void main(String[] args) {
     try {
+      Tmcs.init();
+      boolean noMenu = false;
+      if (args.length > 0 && args[0].equals("-nm")) {
+        noMenu = true;
+      }
       RailroadSystemMapParser railroadSystemMapParser = null;
       MainMenu mm = new MainMenu();
-      mm.printMainMenu();
-      Integer mainMenuSelection = mm.getNumericalInput(2);
-      if (mainMenuSelection.equals(2)) {
-        String systemDefFile = mm.getValidFile("System definition map");
-        railroadSystemMapParser = new RailroadSystemMapParser(systemDefFile);
+      if (!noMenu) {
+        mm.printMainMenu();
+        Integer mainMenuSelection = mm.getNumericalInput(2);
+        if (mainMenuSelection.equals(2)) {
+          String systemDefFile = mm.getValidFile("System definition map");
+          railroadSystemMapParser = new RailroadSystemMapParser(systemDefFile);
+        } else {
+          railroadSystemMapParser = new RailroadSystemMapParser();
+        }
       } else {
         railroadSystemMapParser = new RailroadSystemMapParser();
       }
@@ -75,12 +72,16 @@ public class Tmcs {
       System.out.println(Tmcs.railroadSystemMap + Strings.NL);
 
       EventParser eventParser = null;
-      mm.printEventMenu();
-      Integer eventMenuSelection = mm.getNumericalInput(2);
-      if (eventMenuSelection.equals(2)) {
-        String eventFile = mm.getValidFile("Event file");
-        // Load in Events
-        eventParser = new EventParser(eventFile);
+      if (!noMenu) {
+        mm.printEventMenu();
+        Integer eventMenuSelection = mm.getNumericalInput(2);
+        if (eventMenuSelection.equals(2)) {
+          String eventFile = mm.getValidFile("Event file");
+          // Load in Events
+          eventParser = new EventParser(eventFile);
+        } else {
+          eventParser = new EventParser();
+        }
       } else {
         eventParser = new EventParser();
       }
@@ -93,6 +94,18 @@ public class Tmcs {
       e.printStackTrace();
     }
     System.out.println("Exiting TMCS Simulation");
+  }
+  
+  private static void init() {
+    IChangeLightListener cl = new IChangeLightListener() {
+      @Override
+      public void lightChange(ChangeLight changeLight) {
+        Tmcs.outputChangeLightEvents.add(changeLight);
+      }
+    };
+    SystemEventGenerator.getInstance().addChangeLightListener(cl);
+    Tmcs.trains = new TreeMap<>();
+    Tmcs.journeyValidator = new JourneyValidator(trains, railroadSystemMap);
   }
 
   private static void runSimulationLoop() {
@@ -124,7 +137,8 @@ public class Tmcs {
         Tmcs.moveTrains();
         SimulationTime.increment();
         Tmcs.printSystemState(false);
-        
+        Tmcs.inputEventsProcessed.clear();
+        Tmcs.outputChangeLightEvents.clear();
       }
       Tmcs.inputEventsProcessed.add(currentEvent);
       currentEvent = eventQueue.getNextEvent();
@@ -278,15 +292,16 @@ public class Tmcs {
   }
   
   private static void buildPrintSegments(StringBuilder sb) {
-    sb.append("Station/Route Segments Traffic Light Color:" + Strings.NL);
-    sb.append("Station   Route   Seg. #   Color" + Strings.NL);
-    sb.append("-------   -----   ------   -----" + Strings.NL);
+    sb.append("Segments Traffic Light Color:" + Strings.NL);
+    sb.append("Station/                " + Strings.NL);
+    sb.append(" Route    Seg. #   Color" + Strings.NL);
+    sb.append("-------   ------   -----" + Strings.NL);
     Map<String, Station> stations = Tmcs.railroadSystemMap.getStations();
     for (Entry<String, Station> stationEntry : stations.entrySet()) {
       Station station = stationEntry.getValue();
       Segment platform = station.getPlatform();
       String formattedStr = String.format(
-          "%7s%17s%8s", station, platform, platform.getTrafficLightColor());
+          "%7s%9s%8s", station, platform, platform.getTrafficLightColor());
       sb.append(formattedStr + Strings.NL);
     }
     Map<String, Route> routes = Tmcs.railroadSystemMap.getRoutes();
@@ -294,7 +309,7 @@ public class Tmcs {
       Route route = routeEntry.getValue();
       for (Segment segment : route.getSegments()) {
         String formattedStr = 
-            String.format("%15s%9s%8s", route, segment, segment.getTrafficLightColor());
+            String.format("%7s%9s%8s", route, segment, segment.getTrafficLightColor());
         sb.append(formattedStr + Strings.NL);
       }
     }
@@ -303,7 +318,7 @@ public class Tmcs {
   private static void buildPrintStationAndRouteAvailabilities(StringBuilder sb) {
     sb.append("Station/Route Availabilities:" + Strings.NL);
     sb.append("Station/   Open/" + Strings.NL);
-    sb.append("Route      Close" + Strings.NL);
+    sb.append(" Route     Close" + Strings.NL);
     sb.append("--------   -----" + Strings.NL);
     Map<String, Station> stations = Tmcs.railroadSystemMap.getStations();
     Availability availability = null;

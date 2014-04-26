@@ -13,7 +13,7 @@ public class CloseRoute extends RouteEvent {
       Integer durationInt = new Integer(this.timeunit);
       return new Time(durationInt);
     } else {
-      return new Time(0);
+      return null;
     }
   }
   

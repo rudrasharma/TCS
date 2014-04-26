@@ -13,7 +13,7 @@ public class CloseStation extends StationEvent {
       Integer durationInt = new Integer(this.timeunit);
       return new Time(durationInt);
     } else {
-      return new Time(0);
+      return null;
     }
   }
   
