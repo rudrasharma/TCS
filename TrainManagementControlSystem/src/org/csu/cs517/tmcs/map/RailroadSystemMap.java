@@ -201,6 +201,12 @@ public class RailroadSystemMap {
         }
       }
     }
+    for (Entry<String, Station> s : this.stations.entrySet()) {
+      Segment platform = s.getValue().getPlatform();
+      if (platform.getNext().contains(segment)) {
+        previous.add(platform);
+      }
+    }
     return previous;
   }
   
