@@ -106,6 +106,9 @@ public class JourneyValidator {
     if (!this.validateStopStationsInRoutes(trainId, routes, stops)) {
       return false;
     }
+    if (!this.validateContiguous(trainId, routes)) {
+      return false;
+    }
     return true;
   }
 
@@ -177,11 +180,34 @@ public class JourneyValidator {
       }
     }
     if (stationNotInRoutes != null) {
-      this.postValidationMessage = "Journey rejected. Stop station "
+      this.postValidationMessage = "Journey is rejected. Stop station "
           + stationNotInRoutes
           + " is not a station in the list of journey routes submitted by train "
           + trainId + ".";
       return false;
+    }
+    return true;
+  }
+
+  private boolean validateContiguous(String trainId, List<Route> routes) {
+    for (int rIdx = 0; rIdx < routes.size() - 1; rIdx++) {
+      Route firstRoute = routes.get(rIdx);
+      Route secondRoute = routes.get(rIdx + 1);
+      Station endStation = firstRoute.getEndStation();
+      Station startStation = secondRoute.getStartStation();
+      if (endStation != startStation) {
+        this.postValidationMessage = 
+            "Journey is rejected. Routes are not contiguosly listed since the "
+            + "end station "
+            + endStation
+            + " of route "
+            + firstRoute
+            + " is not the same start station "
+            + startStation
+            + " of route "
+            + secondRoute + ".";
+        return false;
+      }
     }
     return true;
   }
