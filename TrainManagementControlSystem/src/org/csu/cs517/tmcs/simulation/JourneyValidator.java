@@ -140,7 +140,7 @@ public class JourneyValidator {
     for (Route route : routes) {
       if (route.getAvailability() == Availability.CLOSED) {
         this.postValidationMessage = "Journey is rejected. Train " + trainId
-            + " is submitted journey with a route " + route
+            + " has submitted journey with a route " + route
             + " that is currently closed.";
         return false;
       }
@@ -167,7 +167,7 @@ public class JourneyValidator {
     for (Station s : stations) {
       boolean found = false;
       for (Route r : routes) {
-        if (r.getStartStation() == s) {
+        if (r.getStartStation() == s || r.getEndStation() == s) {
           found = true;
           break;
         }
