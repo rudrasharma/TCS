@@ -1,0 +1,16 @@
+Java TMCS TODOs:
+
+  o Test system and fix bugs! (In Progress)
+  
+  o Create textual output of entire running state of the system per simulation
+     loop. (IMPLEMENTED)
+     
+  o Handle case where two submit journeys events in the same simulation
+     loop start at the same start station. (IMPLEMENTED)
+     
+  o Handle time duration of close route and station events. (IMPLEMENTED)
+  
+  o Understand ChangeLight(...) system output event. (IMPLEMENTED)
+     a. Need to implement
+     b. Possibly change the event system to using observer pattern with
+        listeners instead of pushing the events via method calls to system map.
