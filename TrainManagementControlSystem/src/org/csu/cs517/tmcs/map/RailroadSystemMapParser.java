@@ -1,6 +1,7 @@
 package org.csu.cs517.tmcs.map;
 
 import java.io.BufferedReader;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -32,12 +33,17 @@ public class RailroadSystemMapParser {
 	}
   }
   public RailroadSystemMapParser() throws IOException{
-	  this(DEFAULT_FILE);
+	  this(null);
   }
   
 
   public void parseMapFile(String file) throws IOException {
-	InputStream inputStream = getClass().getClassLoader().getResourceAsStream(file);
+	  InputStream inputStream = null;
+	if(file==null){
+		inputStream = getClass().getClassLoader().getResourceAsStream(DEFAULT_FILE);
+	}else{
+		inputStream = new FileInputStream(file);
+	}
     BufferedReader in = new BufferedReader(
     		new InputStreamReader(inputStream));
     String line = in.readLine();

@@ -1,6 +1,7 @@
 package org.csu.cs517.tmcs.input.event;
 
 import java.io.BufferedReader;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -30,14 +31,20 @@ public class EventParser {
 	public EventParser() throws ClassNotFoundException, NoSuchMethodException,
 			SecurityException, InstantiationException, IllegalAccessException,
 			IllegalArgumentException, InvocationTargetException, IOException {
-	  this(DEFAULT_FILE);
+	  this(null);
   }
   
   public void parseFile(String fileName) 
       throws IOException, ClassNotFoundException, NoSuchMethodException, 
       SecurityException, InstantiationException, IllegalAccessException, 
       IllegalArgumentException, InvocationTargetException {
-		InputStream inputStream = getClass().getClassLoader().getResourceAsStream(fileName);
+	  InputStream inputStream = null;
+	  if(fileName == null){
+			inputStream = getClass().getClassLoader().getResourceAsStream(DEFAULT_FILE);
+
+	  }else{
+			inputStream = new FileInputStream(fileName);
+	  }
 	    BufferedReader in = new BufferedReader(
 	    		new InputStreamReader(inputStream));
     String line = in.readLine();
