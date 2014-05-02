@@ -141,8 +141,8 @@ public class Tmcs {
         Tmcs.restartTrain(restart);
       } else if (currentEvent instanceof End) {
         Tmcs.moveTrains();
-        SimulationTime.increment();
         Tmcs.printSystemState(false);
+        SimulationTime.increment();
         Tmcs.inputEventsProcessed.clear();
         Tmcs.outputChangeLightEvents.clear();
       }
@@ -215,7 +215,8 @@ public class Tmcs {
         && current.getTrafficLightColor() == TrafficLightColor.RED
         && current.getOccupiedBy() != null) {
       Route trainsNextRoute = current.getOccupiedBy().getNextRoute();
-      if (trainsNextRoute.getSegments().get(0).getOccupiedBy() == null) {
+      if (trainsNextRoute != null &&
+          trainsNextRoute.getSegments().get(0).getOccupiedBy() == null) {
         ChangeLight cl = new ChangeLight(current, TrafficLightColor.GREEN);
         SystemEventGenerator.getInstance().generateChangeLightEvent(cl);
       }
