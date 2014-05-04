@@ -1,0 +1,14 @@
+//Train traveling on another route while another train starts on the same
+SubmitJourney(465,1,(0005,0000),(FTCL))
+end
+end
+end
+end
+end
+SubmitJourney(300,1,(0000),(FTCL))
+end
+end
+end
+end
+end
+end

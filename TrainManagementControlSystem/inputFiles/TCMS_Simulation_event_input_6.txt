@@ -1,0 +1,18 @@
+//Trains crossing across route 0000 at different times
+SubmitJourney(465,1,(0000,0002),(FTCL,LGMT))
+SubmitJourney(300,2,(0005,0000),(BOLD,FTCL))
+end
+end
+end
+CloseRoute(0000)
+end
+OpenRoute(0000)
+end
+end
+end
+end
+end
+end
+end
+end
+end

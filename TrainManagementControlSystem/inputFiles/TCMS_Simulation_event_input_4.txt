@@ -1,0 +1,13 @@
+CloseRoute(0005)
+SubmitJourney(465,1,(0002),(LGMT))
+SubmitJourney(300,2,(0005),(FTCL))
+end
+end
+end
+OpenRoute(0005)
+end
+CloseStation(LGMT)
+end
+OpenStation(LGMT)
+end
+end

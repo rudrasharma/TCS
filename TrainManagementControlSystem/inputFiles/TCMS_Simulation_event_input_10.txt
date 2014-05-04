@@ -1,0 +1,21 @@
+//Trains traveling one behind another train with also reaching the end stop - happy path
+SubmitJourney(465,1,(0000,0002),(FTCL))
+end
+end
+SubmitJourney(200,1,(0000,0001),(FTCL))
+end
+end
+end
+end
+end
+end
+end
+end
+end
+end
+end
+end
+end
+end
+end
+end

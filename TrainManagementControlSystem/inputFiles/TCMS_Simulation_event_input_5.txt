@@ -1,0 +1,14 @@
+//Train traveling on two routes with multiple stops.
+SubmitJourney(465,1,(0000,0002),(FTCL,LGMT))
+SubmitJourney(300,2,(0005),(BOLD))
+end
+end
+end
+end
+end
+end
+end
+end
+end
+end
+end

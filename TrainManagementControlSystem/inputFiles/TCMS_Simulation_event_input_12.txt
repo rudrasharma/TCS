@@ -1,0 +1,19 @@
+//Stop train in the middle of the journey and restart with a station closed 
+SubmitJourney(465,1,(0000,0001),(FTCL,LGMT))
+end
+end
+end
+Stop(465)
+end
+CloseStation(LGMT)
+end
+end
+end
+Restart(465)
+end
+end
+OpenStation(LGMT)
+end
+end
+end
+end

@@ -1,0 +1,15 @@
+//Close stations in the middle of the journey. 
+SubmitJourney(465,1,(0000,0001),(FTCL,LGMT))
+end
+end
+end
+CloseStation(LGMT)
+end
+end
+end
+OpenStation(LGMT)
+end
+end
+end
+end
+end
